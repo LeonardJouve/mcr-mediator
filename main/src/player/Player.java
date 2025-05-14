@@ -1,25 +1,16 @@
 package player;
 
-import role.Role;
+import network.server.ClientHandler;
 
-import java.net.Socket;
-
-public class Player {
+public class Player extends ClientHandler {
     private static int nextId = 0;
 
     private final int id;
     private final String name;
-    private Role role;
-    private final Socket socket;
 
-    public Player(String name, Socket socket) {
+    public Player(String name) {
+        super();
         this.id = ++nextId;
         this.name = name;
-        this.socket = socket;
-        this.role = null;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }
