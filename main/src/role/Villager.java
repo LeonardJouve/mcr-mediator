@@ -1,11 +1,11 @@
 package role;
 
-import mediator.Mediator;
+import mediator.MediatorState;
 import player.Player;
 
 public class Villager extends Role {
-    public Villager(Player player, Mediator mediator) {
-        super(player, mediator);
+    public Villager(Player player, MediatorState mediatorState) {
+        super(player, mediatorState);
     }
 
     protected void activate() {}

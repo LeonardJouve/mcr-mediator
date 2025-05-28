@@ -1,11 +1,11 @@
 package role;
 
-import mediator.Mediator;
+import mediator.MediatorState;
 import player.Player;
 
 public class Seer extends Role {
-    public Seer(Player player, Mediator mediator) {
-        super(player, mediator);
+    public Seer(Player player, MediatorState mediatorState) {
+        super(player, mediatorState);
     }
 
     public void activate() {

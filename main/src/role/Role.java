@@ -1,16 +1,16 @@
 package role;
 
-import mediator.Mediator;
+import mediator.MediatorState;
 import player.Player;
 
 public abstract class Role {
     private boolean isAlive;
-    private Mediator mediator;
+    private MediatorState mediatorState;
     private final Player player;
 
-    public Role(Player player, Mediator mediator) {
+    public Role(Player player, MediatorState mediatorState) {
         this.isAlive = true;
-        this.mediator = mediator;
+        this.mediatorState = mediatorState;
         this.player = player;
     }
 
@@ -26,9 +26,5 @@ public abstract class Role {
 
     public void kill() {
         this.isAlive = false;
-    }
-
-    public void setMediator(Mediator mediator) {
-        this.mediator = mediator;
     }
 }

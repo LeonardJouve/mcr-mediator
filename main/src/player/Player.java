@@ -1,16 +1,17 @@
 package player;
 
-import network.server.ClientHandler;
-
-public class Player extends ClientHandler {
+public class Player {
     private static int nextId = 0;
 
     private final int id;
     private final String name;
 
     public Player(String name) {
-        super();
         this.id = ++nextId;
         this.name = name;
+    }
+
+    public String toString() {
+        return name;
     }
 }

@@ -1,11 +1,11 @@
 package role;
 
-import mediator.Mediator;
+import mediator.MediatorState;
 import player.Player;
 
 public class Witch extends Role {
-    public Witch(Player player, Mediator mediator) {
-        super(player, mediator);
+    public Witch(Player player, MediatorState mediatorState) {
+        super(player, mediatorState);
     }
 
     public void activate() {
