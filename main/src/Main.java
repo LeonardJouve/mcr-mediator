@@ -1,6 +1,4 @@
-
 import GUI.*;
-
 import mediator.MediatorState;
 import mediator.NormalMediator;
 import ui.MainFrame;

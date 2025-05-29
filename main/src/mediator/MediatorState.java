@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MediatorState implements Mediator {
     private Mediator mediator;
-    private List<Player> players;
+    private final List<Player> players;
 
     public MediatorState() {
         this.mediator = new NormalMediator(this);

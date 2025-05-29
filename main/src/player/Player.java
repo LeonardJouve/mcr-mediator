@@ -11,6 +11,10 @@ public class Player {
         this.name = name;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String toString() {
         return name;
     }
