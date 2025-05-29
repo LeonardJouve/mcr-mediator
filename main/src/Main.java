@@ -1,5 +1,12 @@
+
+import GUI.*;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Hello World!");
+
+        GUI gui = new GUI();
+
+        System.out.println("Finito");
     }
 }

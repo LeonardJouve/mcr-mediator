@@ -20,6 +20,7 @@ public class Server {
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
         clientSocket = serverSocket.accept();
+        /*
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         String greeting = in.readLine();
@@ -29,6 +30,8 @@ public class Server {
         else {
             out.println("unrecognised greeting");
         }
+
+         */
     }
 
 }
