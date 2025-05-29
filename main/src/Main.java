@@ -1,12 +1,14 @@
 
 import GUI.*;
 
+import mediator.MediatorState;
+import mediator.NormalMediator;
+import ui.MainFrame;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
 
-        GUI gui = new GUI();
-
-        System.out.println("Finito");
+        MediatorState mediatorState = new MediatorState();
+        new MainFrame(mediatorState);
     }
 }
