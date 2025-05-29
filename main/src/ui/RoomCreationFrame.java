@@ -3,6 +3,7 @@ package ui;
 import player.Player;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,8 @@ public class RoomCreationFrame extends JFrame {
     private final MainFrame mainFrame;
 
     public RoomCreationFrame(MainFrame mainFrame) {
-        this.mainFrame = mainFrame;
+        this.mainFrame = mainFrame; // remplacer ça par un genre de classe qui gère les frames ?
+
         this.nameField = new JTextField(15);
         this.okButton = new JButton("OK");
         this.startButton = new JButton("Start");
@@ -24,13 +26,21 @@ public class RoomCreationFrame extends JFrame {
         this.okButton.addActionListener(e -> addPlayer());
         this.startButton.addActionListener(e -> start());
 
-        this.add(this.nameField);
-        this.add(this.okButton);
-        this.add(this.startButton);
+        JPanel contentPane = new JPanel(new BorderLayout());
+        contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        this.nameField.setBounds(100, 100, 100, 20);
-        this.okButton.setBounds(250, 100, 100, 20);
-        this.startButton.setBounds(50, 50, 80, 30);
+        contentPane.add(nameField, BorderLayout.NORTH);
+        contentPane.add(okButton, BorderLayout.SOUTH);
+        contentPane.add(startButton, BorderLayout.EAST);
+
+        this.setContentPane(contentPane);
+
+        // this.getContentPane().add(this.nameField);
+        // this.getContentPane().add(this.okButton);
+        // this.getContentPane().add(this.startButton);
+        // this.nameField.setBounds(100, 100, 100, 20);
+        // this.okButton.setBounds(250, 100, 100, 20);
+        // this.startButton.setBounds(50, 50, 80, 30);
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setSize(800, 800);
@@ -58,7 +68,7 @@ public class RoomCreationFrame extends JFrame {
     }
 
     void start() {
-
+        System.out.println("Starting ...");
         mainFrame.setCurrentFrame(new GameFrame(mainFrame));
     }
 }
