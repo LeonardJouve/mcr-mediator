@@ -13,7 +13,7 @@ public class GameFrame extends JFrame {
     public GameFrame(MainFrame mainFrame, List<Player> players) {
         this.mainFrame = mainFrame;
 
-        this.mainFrame.getMediatorState().setMediator(new NormalMediator(mainFrame.getMediatorState()));
+        this.mainFrame.getMediatorState().setGameMediator(new NormalMediator(mainFrame.getMediatorState()));
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();

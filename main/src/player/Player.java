@@ -1,5 +1,6 @@
 package player;
 
+// représentation d'un joueur du point de vue du serveur
 public class Player {
     private static int nextId = 0;
 

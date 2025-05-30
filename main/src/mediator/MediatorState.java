@@ -7,28 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MediatorState implements Mediator {
-    private Mediator mediator;
+    private Mediator gameMediator;
     private final List<Player> players;
 
     public MediatorState() {
-        this.mediator = new NormalMediator(this);
+        this.gameMediator = new NormalMediator(this);
         this.players = new ArrayList<>();
     }
 
-    public void setMediator(Mediator mediator) {
-        this.mediator = mediator;
+    public void setGameMediator(Mediator gameMediator) {
+        this.gameMediator = gameMediator;
     }
 
     public int getMinPlayers() {
-        return mediator.getMinPlayers();
+        return gameMediator.getMinPlayers();
     }
 
     public int getMaxPlayers() {
-        return mediator.getMaxPlayers();
+        return gameMediator.getMaxPlayers();
     }
 
     public void playTurn() {
-        mediator.playTurn();
+        gameMediator.playTurn();
     }
 
     public List<Player> getPlayers() {
@@ -36,7 +36,7 @@ public class MediatorState implements Mediator {
     }
 
     public void assignRoles() {
-        mediator.assignRoles();
+        gameMediator.assignRoles();
     }
 
     public void addPlayer(Player player) {
@@ -45,6 +45,10 @@ public class MediatorState implements Mediator {
 
     @Override
     public boolean start() {
-        return false;
+        if (!gameMediator.start()) {
+            return false;
+        }
+
+        return true;
     }
 }

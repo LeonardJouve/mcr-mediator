@@ -1,5 +1,9 @@
 package network.server;
 
+import mediator.MediatorState;
+import mediator.SimpleGameMediator;
+import player.Player;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,13 +17,23 @@ public class ClientHandler implements Runnable{
     private BufferedReader in;
     private String name;
 
-    public ClientHandler(Socket socket, Server server) {
+    private Player player;
+
+    private final boolean isCreator;
+
+    public ClientHandler(Socket socket, Server server, boolean isCreator) {
         this.socket = socket;
         this.server = server;
+        this.isCreator = isCreator;
     }
+
 
     public void send(String message) {
         out.println(message);
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     @Override
@@ -30,6 +44,13 @@ public class ClientHandler implements Runnable{
 
             out.println("Entrez votre nom:");
             name = in.readLine();
+            setPlayer(new Player(name));
+            if (server.getMediatorState() == null){
+
+
+                out.println("Vous êtes le créateur. Entrer 'start' quand la partie doit commencer");
+                // éventuellement lire un ACK ?
+            }
             server.broadcast(name + " a rejoint la partie");
 
             String line;

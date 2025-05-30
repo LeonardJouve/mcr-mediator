@@ -53,4 +53,8 @@ public class Client {
             System.out.println(i);
         }
     }
+
+    public static void main(String[] args) {
+        new Client("127.0.0.1", 2999);
+    }
 }
