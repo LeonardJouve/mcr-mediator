@@ -8,37 +8,44 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiFunction;
 
-// mediator pour l'exécution d'une partie ?
 
-public class NormalMediator implements Mediator {
+// pour des parties de type "III distribution des cartes pour parties simplifiées" : https://www.regledujeu.fr/loup-garou-regle/
+
+public class SimpleGameMediator implements Mediator{
     private final MediatorState mediatorState;
     private final List<Villager> villagers;
     private final List<WereWolf> wereWolves;
-    private Witch witch;
-    private Seer seer;
+    private Seer seer = null;
 
+    // les rôles essentiels à attribuer dans une partie de 8 joueurs
     private final static List<BiFunction<Player, MediatorState, Role>> primaryRoles = List.of(
-            WereWolf::new, Witch::new, Villager::new, WereWolf::new,
-            Villager::new, Seer::new, WereWolf::new
+            WereWolf::new, WereWolf::new, Seer::new, Villager::new,
+            Villager::new, Villager::new, Villager::new, Villager::new
     );
 
-
+    // rôles à attribuer en plus si assez de joueurs
     private final static List<BiFunction<Player, MediatorState, Role>> otherRoles = List.of(
-            Villager::new, Villager::new, Villager::new, WereWolf::new
+            Villager::new, Villager::new, Villager::new, WereWolf::new  // ...
     );
 
-    public NormalMediator(MediatorState mediatorState) {
+
+    public SimpleGameMediator(MediatorState mediatorState) {
         this.mediatorState = mediatorState;
         this.villagers = new ArrayList<>();
         this.wereWolves = new ArrayList<>();
-        this.witch = null;
-        this.seer = null;
     }
 
+    @Override
+    public void playTurn() {
+
+    }
+
+    @Override   // retourne les joueurs du mediatorState associé
     public List<Player> getPlayers() {
         return mediatorState.getPlayers();
     }
 
+    @Override
     public void assignRoles() {
         List<Player> players = getPlayers();
         Collections.shuffle(players);
@@ -53,26 +60,28 @@ public class NormalMediator implements Mediator {
                 case WereWolf w -> wereWolves.add(w);
                 case Villager v -> villagers.add(v);
                 case Seer s -> seer = s;
-                case Witch w -> witch = w;
                 default -> throw new IllegalStateException("Unexpected role: " + role);
             }
         }
     }
 
-    public void playTurn() {
-
-    }
-
+    @Override
     public int getMinPlayers() {
-        return 2;
+        return 8;
     }
 
+    @Override
     public int getMaxPlayers() {
-        return 10;
+        return 18;
     }
 
     @Override
     public boolean start() {
-        return false;
+        if (!(getMinPlayers() <= getPlayers().size() && getPlayers().size() <= getMaxPlayers())) {
+            return false;
+        }
+        assignRoles();
+
+        return true;
     }
 }

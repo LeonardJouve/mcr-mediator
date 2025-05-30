@@ -12,7 +12,7 @@ public class MediatorState implements Mediator {
 
     public MediatorState() {
         this.mediator = new NormalMediator(this);
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<>();
     }
 
     public void setMediator(Mediator mediator) {
@@ -41,5 +41,10 @@ public class MediatorState implements Mediator {
 
     public void addPlayer(Player player) {
         players.add(player);
+    }
+
+    @Override
+    public boolean start() {
+        return false;
     }
 }

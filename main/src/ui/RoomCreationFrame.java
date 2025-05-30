@@ -25,13 +25,15 @@ public class RoomCreationFrame extends JFrame {
 
         this.okButton.addActionListener(e -> addPlayer());
         this.startButton.addActionListener(e -> start());
+        JPanel contentPane = new JPanel();
+        contentPane.setLayout(new GridBagLayout());
 
-        JPanel contentPane = new JPanel(new BorderLayout());
+
         contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        contentPane.add(nameField, BorderLayout.NORTH);
-        contentPane.add(okButton, BorderLayout.SOUTH);
-        contentPane.add(startButton, BorderLayout.EAST);
+        contentPane.add(nameField);
+        contentPane.add(okButton);
+        contentPane.add(startButton);
 
         this.setContentPane(contentPane);
 
@@ -49,7 +51,7 @@ public class RoomCreationFrame extends JFrame {
     void addPlayer() {
         // ajouter un joueur depuis le namefield
         String name = nameField.getText();
-
+        nameField.setText("");
         if (name.isEmpty()) {
             System.out.println("Le nom est vide");
             return;
@@ -69,6 +71,6 @@ public class RoomCreationFrame extends JFrame {
 
     void start() {
         System.out.println("Starting ...");
-        mainFrame.setCurrentFrame(new GameFrame(mainFrame));
+        mainFrame.setCurrentFrame(new GameFrame(mainFrame, players));
     }
 }

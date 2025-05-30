@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+// singleton class server
+
 public class Server {
     private static Server instance;
-    private int port = 2999;
+    private final static int port = 2999;
     private Server(){}
     private ServerSocket serverSocket;
     private Socket clientSocket;
+
+
     public Server getInstance(){
         if(instance == null){
             instance = new Server();

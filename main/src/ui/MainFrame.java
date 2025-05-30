@@ -17,7 +17,9 @@ public class MainFrame extends JFrame {
     }
 
     void setCurrentFrame(JFrame currentFrame) {
+        this.currentFrame.setVisible(false);
         this.currentFrame = currentFrame;
+        this.currentFrame.setVisible(true);
     }
 
     MediatorState getMediatorState() {

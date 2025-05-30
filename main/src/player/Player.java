@@ -15,6 +15,10 @@ public class Player {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String toString() {
         return name;
     }
