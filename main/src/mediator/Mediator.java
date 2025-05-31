@@ -13,6 +13,8 @@ public interface Mediator {
     int getMinPlayers();
     int getMaxPlayers();
 
+    boolean isGameOver();
+
     // pour commencer la partie. Retourne false si pas assez de joueurs
     boolean start();
 }

@@ -16,6 +16,8 @@ public class SimpleGameMediator implements Mediator{
     private final List<Villager> villagers;
     private final List<WereWolf> wereWolves;
     private Seer seer = null;
+    private final List<Role> roles;     // pour pouvoir facilement accéder à tous les rôles d'un seul coup
+    private boolean gameOver = false;
 
     private int turn = 0;
 
@@ -35,18 +37,39 @@ public class SimpleGameMediator implements Mediator{
         this.mediatorState = mediatorState;
         this.villagers = new ArrayList<>();
         this.wereWolves = new ArrayList<>();
+
+        this.roles = new ArrayList<>();
     }
 
     public void broadcastMessage(String message) {
 
     }
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
     @Override
     public void playTurn() {
         ++turn;
         System.out.println("Tour " + turn);
+        System.out.println("Le village s'endort");
         // appeller la voyante, lui faire choisir un joueur, et lui donner son rôle
-        System.out.println("la voyante et lui demander de désigner un joueur dont elle veut sonder la personnalité");
+        System.out.println("la voyante se réveille, et désigne un joueur dont elle veut sonder la personnalité");
+        int chosenPlayerId = seer.choosePlayer(mediatorState.getPlayers());
+
+        for (Player player : mediatorState.getPlayers()) {
+
+            if (chosenPlayerId == player.getId()) {
+                for (Role role : roles) {
+                    if (role.getPlayer() == player) {
+                        seer.sendGameInformation("The chosen player has role : " + role);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
 
         // demander aux loups-garou de voter pour éliminer un joueur
         System.out.println("les Loups-Garous se réveillent, se reconnaissent et désignent une nouvelle victime !!!");
@@ -80,6 +103,10 @@ public class SimpleGameMediator implements Mediator{
                 default -> throw new IllegalStateException("Unexpected role: " + role);
             }
         }
+
+        roles.addAll(villagers);
+        roles.addAll(wereWolves);
+        roles.add(seer);
     }
 
     @Override
@@ -98,7 +125,7 @@ public class SimpleGameMediator implements Mediator{
             return false;
         }
         assignRoles();
-
+        System.out.println("Assigned roles !");
         return true;
     }
 }

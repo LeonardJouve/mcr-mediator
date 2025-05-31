@@ -27,6 +27,11 @@ public class MediatorState implements Mediator {
         return gameMediator.getMaxPlayers();
     }
 
+    @Override
+    public boolean isGameOver() {
+        return false;
+    }
+
     public void playTurn() {
         gameMediator.playTurn();
     }
@@ -47,6 +52,10 @@ public class MediatorState implements Mediator {
     public boolean start() {
         if (!gameMediator.start()) {
             return false;
+        }
+
+        while (!gameMediator.isGameOver()){
+            gameMediator.playTurn();
         }
 
         return true;

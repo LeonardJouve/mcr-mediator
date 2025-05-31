@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 public class Client {
     private Socket socket = null;
     private BufferedReader in = null;
+    private BufferedReader stdIn = null;
     //private DataOutputStream out = null;
     private BufferedWriter out;
     // Constructor to put IP address and port
@@ -14,26 +15,41 @@ public class Client {
     private final static String ENDLINE = "\n";
 
     public Client(String addr, int port, String name){
-        System.out.println("NOUVEAU ! Vanish extra fresh SANS ARNAQUE!");
         // Establish a connection
         try {
             socket = new Socket(addr, port);
             System.out.println("Connected");
-
-            // Takes input from terminal
-            //in = new DataInputStream(System.in);
-
+            // data from user
+            stdIn = new BufferedReader(new InputStreamReader(System.in));
+            // data from server
             in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-
             // Sends output to the socket
             //out = new DataOutputStream(socket.getOutputStream());
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 
+            String lastResponse = "";
 
-            String res = in.readLine();
-            System.out.println("Response: " + res);
-            System.out.println("On continue ?");
+            // on nous demande le nom
+            readServerResponse();
             sendMessage(name);
+            lastResponse = readServerResponse();
+
+            // lire la reponse du serveur
+
+            // si "Wait for instructions"
+            // envoyer ack, et faire un readline
+
+            // si "Send start when ready"
+            // lire l'input user en attendant qu'il écrive start
+
+            if (lastResponse.equals("CREATOR")) {
+                System.out.println("Vous êtes le créateur. Entrer 'start' quand assez de joueurs sont présents pour que la partie puisse commencer");
+
+                do {
+                    lastResponse = readUserResponse();
+                    sendMessage(lastResponse);
+                } while (lastResponse.equals("INVALID"));
+            }
 
         }
         catch (IOException i) {
@@ -67,7 +83,6 @@ public class Client {
     }
 
     private void sendMessage(String msg){
-        System.out.println("Sending: " + msg);
         try{
             System.out.println("[CLient] Sending: " + msg);
             out.write(msg + ENDLINE);
@@ -77,6 +92,30 @@ public class Client {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private String readServerResponse(){
+        String res = "";
+        try {
+            res = in.readLine();
+            System.out.println("Response: " + res);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return res;
+    }
+
+    private String readUserResponse(){
+        String res = "";
+        try {
+            System.out.print(":>");
+            res = stdIn.readLine();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return res;
     }
 
     public Client(String addr, int port)

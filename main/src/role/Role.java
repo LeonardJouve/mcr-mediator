@@ -11,8 +11,6 @@ public abstract class Role {
     private final Player player;
 
 
-
-
     public Role(Player player, MediatorState mediatorState) {
         this.isAlive = true;
         this.isAsleep = true;
@@ -20,10 +18,15 @@ public abstract class Role {
         this.player = player;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     protected abstract void activate();
 
     public void sendGameInformation(String message){
-        return ;
+        System.out.println(this + " reçoit l'information: " + message);
+
     }
 
     public void play() {

@@ -72,6 +72,11 @@ public class NormalMediator implements Mediator {
     }
 
     @Override
+    public boolean isGameOver() {
+        return true;
+    }
+
+    @Override
     public boolean start() {
         return false;
     }

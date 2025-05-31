@@ -33,6 +33,10 @@ public class Server {
         return instance;
     }
 
+    public GameHandler getGameHandler() {
+        return gameHandler;
+    }
+
     public void start() throws IOException {
         serverSocket = new ServerSocket(port);
         System.out.println("Server started");
@@ -58,7 +62,7 @@ public class Server {
     }
     public synchronized void broadcast(String message) {
         for (ClientHandler client : clients) {
-            client.send(message);
+            client.send(message);       // nécéssite que le client soit entrain d'écouter ?
         }
     }
 

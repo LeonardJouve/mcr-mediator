@@ -45,12 +45,24 @@ public class ClientHandler implements Runnable{
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    private String readClientResponse(){
+        String res = "";
+        try {
+            res = in.readLine();
+            System.out.println("Response: " + res);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return res;
     }
 
     @Override
     public void run() {
         try {
+            System.out.println("VANISH ! Dites non aux tâches !");
             in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             //out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -58,17 +70,24 @@ public class ClientHandler implements Runnable{
 
             // out.println("Entrez votre nom:");
             sendMessage("Entrez votre nom:");
-            System.out.println("Waiting for client to answer");
             name = in.readLine();
             System.out.println("Client " + name + " connected");
             setPlayer(new Player(name));
             if (server.getMediatorState() == null){
-                sendMessage("Vous êtes le créateur. Entrer 'start' quand la partie doit commencer");
+                server.setMediatorState(new MediatorState());
+
+                do {
+                    sendMessage("CREATOR");
+                    while (!readClientResponse().equals("start")){
+                        sendMessage("INVALID");
+                    };
+                } while (!server.getGameHandler().getMediatorState().start());
+                System.out.println("WENT THROUGH ^^");
                 //out.println("Vous êtes le créateur. Entrer 'start' quand la partie doit commencer");
 
                 // éventuellement lire un ACK ?
             }
-            server.broadcast(name + " a rejoint la partie");
+            // server.broadcast(name + " a rejoint la partie");
 
             String line;
             while ((line = in.readLine()) != null) {

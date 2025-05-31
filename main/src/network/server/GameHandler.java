@@ -9,6 +9,10 @@ public class GameHandler implements Runnable {
         this.mediatorState = mediatorState;
     }
 
+    public MediatorState getMediatorState() {
+        return mediatorState;
+    }
+
     @Override
     public void run() {
         System.out.println("La partie va commencer ... ");

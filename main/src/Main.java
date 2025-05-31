@@ -16,9 +16,6 @@ public class Main {
         for (Player p : devStuff.players){
             mediatorState.addPlayer(p);
         }
-
         mediatorState.start();
-
-
     }
 }

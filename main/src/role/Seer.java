@@ -3,6 +3,9 @@ package role;
 import mediator.MediatorState;
 import player.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Seer extends Role {
     public Seer(Player player, MediatorState mediatorState) {
         super(player, mediatorState);
@@ -10,6 +13,10 @@ public class Seer extends Role {
 
     public void activate() {
         // Select a player to watch his card
+    }
+
+    public int choosePlayer(List<Player> l) { // retourne l'id du player choisit
+        return getPlayer().chooseAmongPlayers(l).getId();
     }
 
     @Override
