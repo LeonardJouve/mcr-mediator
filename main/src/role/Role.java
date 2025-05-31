@@ -36,6 +36,10 @@ public abstract class Role {
         return isAsleep;
     }
 
+    public void setAsleep(boolean isAsleep) {
+        this.isAsleep = isAsleep;
+    }
+
     public boolean isAlive() {
         return isAlive;
     }
@@ -62,10 +66,6 @@ public abstract class Role {
 
     public void kill() {
         this.isAlive = false;
-    }
-
-    public void setAsleep(boolean isAsleep) {
-        this.isAsleep = isAsleep;
     }
 
 

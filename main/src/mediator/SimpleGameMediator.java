@@ -3,7 +3,6 @@ package mediator;
 import player.Player;
 import role.*;
 
-import javax.print.DocFlavor;
 import java.util.*;
 import java.util.function.BiFunction;
 
@@ -16,6 +15,7 @@ public class SimpleGameMediator implements Mediator{
     private final List<WereWolf> wereWolves;
     private Seer seer = null;
     private final List<Role> roles;     // pour pouvoir facilement accéder à tous les rôles d'un seul coup
+    private final List<Role> livingRoles;
     private boolean gameOver = false;
 
     private int turn = 0;
@@ -38,12 +38,45 @@ public class SimpleGameMediator implements Mediator{
         this.wereWolves = new ArrayList<>();
 
         this.roles = new ArrayList<>();
+        this.livingRoles = new LinkedList<>();
     }
 
     public boolean isGameOver() {
         return gameOver;
     }
 
+    private void computeWinConditions(){
+        boolean wolvesWon = true;
+        boolean villageWon = true;
+
+        boolean atLeastOneLivingWolf = false;
+
+        for (Role role : livingRoles){
+            if (!(role instanceof WereWolf)) {
+                wolvesWon = false;
+                break;
+            }
+        }
+        for (Role wolf : wereWolves){
+            if (wolf.isAlive()){
+                atLeastOneLivingWolf = true;
+                villageWon = false;
+                break;
+            }
+        }
+
+        if (livingRoles.size() == 2 && atLeastOneLivingWolf){
+            wolvesWon = true;       // car dans n'importe quel vote de village, le loup n'acceptera jamais de voter pour lui-même
+        }
+
+        if (wolvesWon) {
+            System.out.println("Les loups garous ont gagné.");
+        } else if (villageWon) {
+            System.out.println("Le village a gagné !");
+        }
+
+        if (wolvesWon || villageWon) gameOver = true;
+    }
 
     public void broadcastMessage(String message) {
         for (Role role : roles) {
@@ -58,39 +91,83 @@ public class SimpleGameMediator implements Mediator{
         }
     }
 
-    private void createVote(List<Role> voters, List<Role> chooseAmong) {
-        List<Player> p = new ArrayList<>();
-        Map<Player, Integer> map = new HashMap<>();
-        chooseAmong.forEach(role -> {p.add(role.getPlayer());});
-        boolean choiceMade = false;
-        while (!choiceMade) {
-            for (Role role : voters) {
-                Player choice = role.choosePlayer(p);
+    private Role getRoleOfPlayer(Player player){
+        for (Role role : roles) {
+            if (role.getPlayer().equals(player)) {
+                return role;
+            }
+        }
+        System.out.println("No role found for player " + player.getName());
+        throw new RuntimeException("No role found for player " + player.getName()); // comme c'est pas censé arriver, je sais pas quoi faire de ça
+    }
+
+
+    /**
+     * Cette fonction existe pour créer un vote, par exemple quand les loups garous ou le village doivent voter pour l'élimination d'un villageois,
+     * @param voters le groupe de votants
+     * @param chooseAmong parmi quel sous-ensemble on propose aux votants de voter
+     * @return le joueur sélectionné
+     */
+    private Player killVote(List<? extends Role> voters, List<Role> chooseAmong) {
+        // vérifier que le chooseAmong ne contienne pas de joueurs morts ?
+        Player chosenPlayer;
+        List<Player> candidates = new ArrayList<>();
+        List<Player> toRemove = new ArrayList<>();
+        Map<Player, Integer> map = new HashMap<>(); // map qui sert à récolter les votes pour un joueur lors d'un "tour de vote"
+        chooseAmong.forEach(role -> {candidates.add(role.getPlayer());});
+
+        int voteTurn = 0;
+        while (candidates.size() != 1 && voteTurn < 10) {
+            ++voteTurn;
+            map.clear();
+            // demander aux votants de voter
+            for (Role voter : voters) {
+                //if (!voter.isAlive()) continue;
+                Player choice = voter.choosePlayer(candidates);
                 map.merge(choice, 1, Integer::sum);
             }
+
+            candidates.clear();
             Integer mostChosenAmount = 0;
             Player mostChosenPlayer = null;
             for (Map.Entry<Player, Integer> entry : map.entrySet()) {
+                if (mostChosenPlayer == null) {
+                    mostChosenPlayer = entry.getKey();
+                    mostChosenAmount = entry.getValue();
+                    candidates.add(mostChosenPlayer);
+                    continue;
+                }
                 if (entry.getValue() > mostChosenAmount) {
-                    map.remove(mostChosenPlayer);
                     mostChosenAmount = entry.getValue();
                     mostChosenPlayer = entry.getKey();
+                    candidates.clear();
+                    candidates.add(mostChosenPlayer);
+                } else if (entry.getValue().equals(mostChosenAmount)) {
+                    candidates.add(entry.getKey());
                 }
             }
 
         }
 
+        chosenPlayer = candidates.getFirst();
+
+        System.out.println("Selected : " + chosenPlayer);
+
+        return chosenPlayer;
     }
 
     @Override
     public void playTurn() {
+        if (isGameOver()){
+            System.out.println("Can't play turn because game over");
+        }
         ++turn;
         System.out.println("Tour " + turn);
         displayCurrentGameState();
 
         System.out.println("Le village s'endort");
         // appeller la voyante, lui faire choisir un joueur, et lui donner son rôle
-        System.out.println("la voyante se réveille, et désigne un joueur dont elle veut sonder la personnalité");
+        System.out.println("La voyante se réveille, et désigne un joueur dont elle veut sonder la personnalité");
         Player chosenPlayer = seer.choosePlayer(mediatorState.getPlayers());
 
         for (Role role : roles) {
@@ -103,17 +180,29 @@ public class SimpleGameMediator implements Mediator{
         // demander aux loups-garou de voter pour éliminer un joueur
         System.out.println("les Loups-Garous se réveillent, se reconnaissent et désignent une nouvelle victime !!!");
 
-
         // faire un vote pour les loups-garous
-
+        ArrayList livingWereWolves = new ArrayList();
+        wereWolves.forEach(role -> {if (role.isAlive()) livingWereWolves.add(role);});
+        Role killedRole = getRoleOfPlayer(killVote(livingWereWolves, livingRoles));
+        killedRole.kill();
+        livingRoles.remove(killedRole);
+        System.out.println("Le village se réveille, et découvrent que pendant la nuit, les loups-garous ont tué : " + killedRole);
 
         // réveiller tout le monde pour qu'ils votent pour l'élimination d'un joueur
-        System.out.println("Le village se réveille");
 
+        computeWinConditions();
+        if (gameOver) return;
+
+        System.out.println("Le village va voter l'élimination d'un joueur.");
+        Role killedByVillage = getRoleOfPlayer(killVote(livingRoles, livingRoles));
+        killedByVillage.kill();
+        livingRoles.remove(killedRole);
+        System.out.println("Le village a voté l'élimination de " + killedRole);
+
+        computeWinConditions();
+        if (gameOver) return;
 
         System.out.println("Fin du tour" + "\n" + "\n"+ "\n");
-
-
     }
 
     @Override   // retourne les joueurs du mediatorState associé
@@ -162,6 +251,7 @@ public class SimpleGameMediator implements Mediator{
         }
         assignRoles();
         System.out.println("Assigned roles !");
+        livingRoles.addAll(roles);
         return true;
     }
 }
