@@ -11,4 +11,8 @@ public class Witch extends Role {
     public void activate() {
         // Show victim and select if you want to heal or kill
     }
+
+    public String getRoleName() {
+        return "Witch";
+    }
 }

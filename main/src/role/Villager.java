@@ -11,8 +11,7 @@ public class Villager extends Role {
 
     protected void activate() {}
 
-    @Override
-    public String toString() {
+    public String getRoleName() {
         return "Villager";
     }
 }

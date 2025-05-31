@@ -13,8 +13,8 @@ public class WereWolf extends Role {
         // Select a player to kill
     }
 
-    @Override
-    public String toString() {
+    public String getRoleName() {
         return "WereWolf";
     }
+
 }

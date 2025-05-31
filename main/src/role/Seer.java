@@ -15,12 +15,7 @@ public class Seer extends Role {
         // Select a player to watch his card
     }
 
-    public int choosePlayer(List<Player> l) { // retourne l'id du player choisit
-        return getPlayer().chooseAmongPlayers(l).getId();
-    }
-
-    @Override
-    public String toString() {
+    public String getRoleName() {
         return "Seer";
     }
 }

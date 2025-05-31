@@ -29,7 +29,7 @@ public class MediatorState implements Mediator {
 
     @Override
     public boolean isGameOver() {
-        return false;
+        return gameMediator.isGameOver();
     }
 
     public void playTurn() {
@@ -53,11 +53,13 @@ public class MediatorState implements Mediator {
         if (!gameMediator.start()) {
             return false;
         }
-
+        int loopTurn = 0;   // temporaire
         while (!gameMediator.isGameOver()){
             gameMediator.playTurn();
+            if (++loopTurn > 5) break;
         }
 
+        System.out.println("Fin de partie");
         return true;
     }
 }

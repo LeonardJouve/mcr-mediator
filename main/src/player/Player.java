@@ -9,8 +9,8 @@ import java.util.List;
 // représentation d'un joueur du point de vue du serveur
 public class Player {
     private static int nextId = 0;
-    private BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
     private final int id;
+    private BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
     private final String name;
 
     public Player(String name) {

@@ -3,9 +3,8 @@ package mediator;
 import player.Player;
 import role.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.print.DocFlavor;
+import java.util.*;
 import java.util.function.BiFunction;
 
 
@@ -41,32 +40,62 @@ public class SimpleGameMediator implements Mediator{
         this.roles = new ArrayList<>();
     }
 
-    public void broadcastMessage(String message) {
-
-    }
-
     public boolean isGameOver() {
         return gameOver;
+    }
+
+
+    public void broadcastMessage(String message) {
+        for (Role role : roles) {
+            role.sendGameInformation(message);
+        }
+    }
+
+    public void displayCurrentGameState(){
+        System.out.println("Current game state: ");
+        for (Role role : roles) {
+            System.out.println(role + " (" + (role.isAlive() ? "alive" : "dead")   + ")");
+        }
+    }
+
+    private void createVote(List<Role> voters, List<Role> chooseAmong) {
+        List<Player> p = new ArrayList<>();
+        Map<Player, Integer> map = new HashMap<>();
+        chooseAmong.forEach(role -> {p.add(role.getPlayer());});
+        boolean choiceMade = false;
+        while (!choiceMade) {
+            for (Role role : voters) {
+                Player choice = role.choosePlayer(p);
+                map.merge(choice, 1, Integer::sum);
+            }
+            Integer mostChosenAmount = 0;
+            Player mostChosenPlayer = null;
+            for (Map.Entry<Player, Integer> entry : map.entrySet()) {
+                if (entry.getValue() > mostChosenAmount) {
+                    map.remove(mostChosenPlayer);
+                    mostChosenAmount = entry.getValue();
+                    mostChosenPlayer = entry.getKey();
+                }
+            }
+
+        }
+
     }
 
     @Override
     public void playTurn() {
         ++turn;
         System.out.println("Tour " + turn);
+        displayCurrentGameState();
+
         System.out.println("Le village s'endort");
         // appeller la voyante, lui faire choisir un joueur, et lui donner son rôle
         System.out.println("la voyante se réveille, et désigne un joueur dont elle veut sonder la personnalité");
-        int chosenPlayerId = seer.choosePlayer(mediatorState.getPlayers());
+        Player chosenPlayer = seer.choosePlayer(mediatorState.getPlayers());
 
-        for (Player player : mediatorState.getPlayers()) {
-
-            if (chosenPlayerId == player.getId()) {
-                for (Role role : roles) {
-                    if (role.getPlayer() == player) {
-                        seer.sendGameInformation("The chosen player has role : " + role);
-                        break;
-                    }
-                }
+        for (Role role : roles) {
+            if (role.getPlayer() == chosenPlayer) {
+                seer.sendGameInformation("The chosen player has role : " + role.getRoleName());
                 break;
             }
         }
@@ -75,8 +104,15 @@ public class SimpleGameMediator implements Mediator{
         System.out.println("les Loups-Garous se réveillent, se reconnaissent et désignent une nouvelle victime !!!");
 
 
+        // faire un vote pour les loups-garous
+
+
         // réveiller tout le monde pour qu'ils votent pour l'élimination d'un joueur
         System.out.println("Le village se réveille");
+
+
+        System.out.println("Fin du tour" + "\n" + "\n"+ "\n");
+
 
     }
 
