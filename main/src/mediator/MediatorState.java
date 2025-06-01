@@ -53,10 +53,9 @@ public class MediatorState implements Mediator {
         if (!gameMediator.start()) {
             return false;
         }
-        int loopTurn = 0;   // temporaire
+
         while (!gameMediator.isGameOver()){
             gameMediator.playTurn();
-            if (++loopTurn > 5) break;
         }
 
         System.out.println("Fin de partie");

@@ -13,8 +13,8 @@ public class SimpleGameMediator implements Mediator{
     private final MediatorState mediatorState;
     private final List<Villager> villagers;
     private final List<WereWolf> wereWolves;
-    private Seer seer = null;
-    private final List<Role> roles;     // pour pouvoir facilement accéder à tous les rôles d'un seul coup
+    private Seer seer;
+    private final List<Role> roles;         // pour pouvoir facilement accéder à tous les rôles d'un seul coup
     private final List<Role> livingRoles;
     private boolean gameOver = false;
 
@@ -45,6 +45,10 @@ public class SimpleGameMediator implements Mediator{
         return gameOver;
     }
 
+    /**
+     * Vérifier les conditions de victoire de la partie. La partie s'arrête soit si les loups garous sont tous morts,
+     * soit si il n'y a plus assez de villageois pour les battre lors d'un vote de vilalge
+     */
     private void computeWinConditions(){
         boolean wolvesWon = true;
         boolean villageWon = true;
@@ -65,7 +69,7 @@ public class SimpleGameMediator implements Mediator{
             }
         }
 
-        if (livingRoles.size() == 2 && atLeastOneLivingWolf){
+        if (livingRoles.size() == 2 && atLeastOneLivingWolf){   // pas suffisant commen condition dans un potentiel 2 vs 2 ?
             wolvesWon = true;       // car dans n'importe quel vote de village, le loup n'acceptera jamais de voter pour lui-même
         }
 
@@ -84,6 +88,7 @@ public class SimpleGameMediator implements Mediator{
         }
     }
 
+    // pour afficher brièvement l'état de la partie (qui est en vie, qui pas)
     public void displayCurrentGameState(){
         System.out.println("Current game state: ");
         for (Role role : roles) {
@@ -119,14 +124,15 @@ public class SimpleGameMediator implements Mediator{
         int voteTurn = 0;
         while (candidates.size() != 1 && voteTurn < 10) {
             ++voteTurn;
+            System.out.println("Vote turn " + voteTurn);
             map.clear();
             // demander aux votants de voter
             for (Role voter : voters) {
-                //if (!voter.isAlive()) continue;
                 Player choice = voter.choosePlayer(candidates);
                 map.merge(choice, 1, Integer::sum);
             }
 
+            // comptabiliser le nombre de voix. Si il y a une égalité, recommencer
             candidates.clear();
             Integer mostChosenAmount = 0;
             Player mostChosenPlayer = null;
@@ -180,7 +186,6 @@ public class SimpleGameMediator implements Mediator{
         // demander aux loups-garou de voter pour éliminer un joueur
         System.out.println("les Loups-Garous se réveillent, se reconnaissent et désignent une nouvelle victime !!!");
 
-        // faire un vote pour les loups-garous
         ArrayList livingWereWolves = new ArrayList();
         wereWolves.forEach(role -> {if (role.isAlive()) livingWereWolves.add(role);});
         Role killedRole = getRoleOfPlayer(killVote(livingWereWolves, livingRoles));
@@ -188,11 +193,11 @@ public class SimpleGameMediator implements Mediator{
         livingRoles.remove(killedRole);
         System.out.println("Le village se réveille, et découvrent que pendant la nuit, les loups-garous ont tué : " + killedRole);
 
-        // réveiller tout le monde pour qu'ils votent pour l'élimination d'un joueur
-
+        // avant de réveiller le village, vérifier que la partie n'est pas terminée, pour éviter un vote impossible (un loup garou et un villageois)
         computeWinConditions();
         if (gameOver) return;
 
+        // réveiller tout le monde pour qu'ils votent pour l'élimination d'un joueur
         System.out.println("Le village va voter l'élimination d'un joueur.");
         Role killedByVillage = getRoleOfPlayer(killVote(livingRoles, livingRoles));
         killedByVillage.kill();
