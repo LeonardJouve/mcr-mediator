@@ -16,7 +16,7 @@ public class SimpleGameMediator implements Mediator{
     private Seer seer;
     private final List<Role> roles;         // pour pouvoir facilement accéder à tous les rôles d'un seul coup
     private final List<Role> livingRoles;
-    private boolean gameOver = false;
+    private boolean gameOver;
 
     private int turn = 0;
 
@@ -39,6 +39,7 @@ public class SimpleGameMediator implements Mediator{
 
         this.roles = new ArrayList<>();
         this.livingRoles = new LinkedList<>();
+        this.gameOver = false;
     }
 
     public boolean isGameOver() {
@@ -69,7 +70,7 @@ public class SimpleGameMediator implements Mediator{
             }
         }
 
-        if (livingRoles.size() == 2 && atLeastOneLivingWolf){   // pas suffisant commen condition dans un potentiel 2 vs 2 ?
+        if (livingRoles.size() == 2 && atLeastOneLivingWolf){   // pas suffisant comme condition dans un potentiel 2 vs 2 ?
             wolvesWon = true;       // car dans n'importe quel vote de village, le loup n'acceptera jamais de voter pour lui-même
         }
 
@@ -117,26 +118,26 @@ public class SimpleGameMediator implements Mediator{
         // vérifier que le chooseAmong ne contienne pas de joueurs morts ?
         Player chosenPlayer;
         List<Player> candidates = new ArrayList<>();
-        List<Player> toRemove = new ArrayList<>();
-        Map<Player, Integer> map = new HashMap<>(); // map qui sert à récolter les votes pour un joueur lors d'un "tour de vote"
+        Map<Player, Integer> voteMap = new HashMap<>(); // map qui sert à récolter les votes pour un joueur lors d'un "tour de vote"
         chooseAmong.forEach(role -> {candidates.add(role.getPlayer());});
 
         int voteTurn = 0;
         while (candidates.size() != 1 && voteTurn < 10) {
             ++voteTurn;
             System.out.println("Vote turn " + voteTurn);
-            map.clear();
+            voteMap.clear();
             // demander aux votants de voter
             for (Role voter : voters) {
                 Player choice = voter.choosePlayer(candidates);
-                map.merge(choice, 1, Integer::sum);
+                voteMap.merge(choice, 1, Integer::sum);
             }
 
             // comptabiliser le nombre de voix. Si il y a une égalité, recommencer
+            // TODO gérer les cas où les joueurs ne se mettent jamais d'accord ?
             candidates.clear();
             Integer mostChosenAmount = 0;
             Player mostChosenPlayer = null;
-            for (Map.Entry<Player, Integer> entry : map.entrySet()) {
+            for (Map.Entry<Player, Integer> entry : voteMap.entrySet()) {
                 if (mostChosenPlayer == null) {
                     mostChosenPlayer = entry.getKey();
                     mostChosenAmount = entry.getValue();
@@ -152,20 +153,17 @@ public class SimpleGameMediator implements Mediator{
                     candidates.add(entry.getKey());
                 }
             }
-
         }
 
         chosenPlayer = candidates.getFirst();
-
-        System.out.println("Selected : " + chosenPlayer);
-
+        System.out.println("Le vote a sélectionné : " + chosenPlayer);
         return chosenPlayer;
     }
 
     @Override
     public void playTurn() {
         if (isGameOver()){
-            System.out.println("Can't play turn because game over");
+            System.out.println("La partie est terminée. On ne peut plus jouer de tour");
         }
         ++turn;
         System.out.println("Tour " + turn);

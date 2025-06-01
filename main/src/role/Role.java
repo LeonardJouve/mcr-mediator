@@ -17,7 +17,7 @@ public abstract class Role {
     public Role(Player player, MediatorState mediatorState) {
         this.id = nextId++;
         this.isAlive = true;
-        this.isAsleep = true;
+
         this.mediatorState = mediatorState;
         this.player = player;
     }
@@ -32,25 +32,19 @@ public abstract class Role {
 
     public abstract String getRoleName();
 
-    public boolean isAsleep() {
-        return isAsleep;
-    }
-
-    public void setAsleep(boolean isAsleep) {
-        this.isAsleep = isAsleep;
-    }
 
     public boolean isAlive() {
         return isAlive;
     }
-
+    
     protected abstract void activate();
 
     public void sendGameInformation(String message){
         System.out.println(this + " reçoit l'information: " + message);
     }
 
-    public Player choosePlayer(List<Player> l) { // retourne l'id du player choisit
+    // choisir un joueur parmi plusieurs choix. Nécéssaire de pouvoir le faire puisqu'on connaît rarement les rôles
+    public Player choosePlayer(List<Player> l) {
         Player chosen = getPlayer().chooseAmongPlayers(l);
         System.out.println(this + " choses: " + chosen);  // log temporaire
         return chosen;
