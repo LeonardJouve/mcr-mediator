@@ -199,9 +199,9 @@ public class SimpleGameMediator implements Mediator{
         System.out.println("Le village va voter l'élimination d'un joueur.");
         Role killedByVillage = getRoleOfPlayer(killVote(livingRoles, livingRoles));
         killedByVillage.kill();
-        livingRoles.remove(killedRole);
-        System.out.println("Le village a voté l'élimination de " + killedRole);
-        
+        livingRoles.remove(killedByVillage);
+        System.out.println("Le village a voté l'élimination de " + killedByVillage);
+
         computeWinConditions();
         if (gameOver) return;
 
