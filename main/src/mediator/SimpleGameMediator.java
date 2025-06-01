@@ -110,7 +110,7 @@ public class SimpleGameMediator implements Mediator{
 
     /**
      * Cette fonction existe pour créer un vote, par exemple quand les loups garous ou le village doivent voter pour l'élimination d'un villageois,
-     * @param voters le groupe de votants
+     * @param voters le groupe de votants, ils doivent tous être vivants
      * @param chooseAmong parmi quel sous-ensemble on propose aux votants de voter
      * @return le joueur sélectionné
      */
@@ -201,7 +201,7 @@ public class SimpleGameMediator implements Mediator{
         killedByVillage.kill();
         livingRoles.remove(killedRole);
         System.out.println("Le village a voté l'élimination de " + killedRole);
-
+        
         computeWinConditions();
         if (gameOver) return;
 
