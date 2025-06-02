@@ -6,7 +6,7 @@ import player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediatorState implements Mediator {
+public class MediatorState {
     private Mediator gameMediator;
     private final List<Player> players;
 
@@ -27,11 +27,6 @@ public class MediatorState implements Mediator {
         return gameMediator.getMaxPlayers();
     }
 
-    @Override
-    public boolean isGameOver() {
-        return gameMediator.isGameOver();
-    }
-
     public void playTurn() {
         gameMediator.playTurn();
     }
@@ -40,15 +35,10 @@ public class MediatorState implements Mediator {
         return players;
     }
 
-    public void assignRoles() {
-        gameMediator.assignRoles();
-    }
-
     public void addPlayer(Player player) {
         players.add(player);
     }
 
-    @Override
     public boolean start() {
         if (!gameMediator.start()) {
             return false;

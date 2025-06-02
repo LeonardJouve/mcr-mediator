@@ -3,7 +3,11 @@ package role;
 import mediator.MediatorState;
 import player.Player;
 
+import java.nio.file.Path;
+
 public class Witch extends Role {
+    private final static Path GRAPHIC = Path.of("../../../images/witch.png");
+
     public Witch(Player player, MediatorState mediatorState) {
         super(player, mediatorState);
     }
@@ -14,5 +18,14 @@ public class Witch extends Role {
 
     public String getRoleName() {
         return "Witch";
+    }
+
+    public boolean isWereWolf() {
+        return false;
+    }
+
+    @Override
+    public Path getGraphic() {
+        return GRAPHIC;
     }
 }
