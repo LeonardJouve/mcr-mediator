@@ -1,21 +1,16 @@
 
-import mediator.MediatorState;
 import mediator.BaseRuleMediator;
+import mediator.Mediator;
 import player.Player;
 
 
 public class Main {
     public static void main(String[] args) {
-
-        MediatorState mediatorState = new MediatorState();
-        //new MainFrame(mediatorState);
-
-        mediatorState.setGameMediator(new BaseRuleMediator(mediatorState));
-
         DevStuff devStuff = new DevStuff();
-        for (Player p : devStuff.players){
-            mediatorState.addPlayer(p);
+        Mediator mediator = new BaseRuleMediator(devStuff.players);
+        while(!mediator.isGameOver()){
+            mediator.playTurn();
         }
-        mediatorState.start();
+        System.out.println("Finished");
     }
 }

@@ -1,11 +1,11 @@
 package role;
 
-import mediator.MediatorState;
+import mediator.Mediator;
 import player.Player;
 
 public class WereWolf extends Role {
-    public WereWolf(Player player, MediatorState mediatorState) {
-       super(player, mediatorState);
+    public WereWolf(Player player, Mediator mediator) {
+       super(player, mediator);
 
     }
 

@@ -1,13 +1,16 @@
 package mediator;
 
 import java.util.List;
+import java.util.stream.Stream;
+
 import player.Player;
+import role.Role;
 
 public interface Mediator {
     void playTurn();
 
-    List<Player> getPlayers();
-    void assignRoles();
+    Stream<Role> getRolesAlive();
+    void assignRoles(List<Player> players);
 
 
     int getMinPlayers();
@@ -15,6 +18,5 @@ public interface Mediator {
 
     boolean isGameOver();
 
-    // pour commencer la partie. Retourne false si pas assez de joueurs
-    boolean start();
+    void displayRole(Role role);
 }
