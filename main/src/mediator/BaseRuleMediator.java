@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 
 // pour des parties de type "III distribution des cartes pour parties simplifiées" : https://www.regledujeu.fr/loup-garou-regle/
 
-public class SimpleGameMediator implements Mediator{
+public class BaseRuleMediator implements Mediator{
     private final MediatorState mediatorState;
     private final List<Villager> villagers;
     private final List<WereWolf> wereWolves;
@@ -32,7 +32,7 @@ public class SimpleGameMediator implements Mediator{
     );
 
 
-    public SimpleGameMediator(MediatorState mediatorState) {
+    public BaseRuleMediator(MediatorState mediatorState) {
         this.mediatorState = mediatorState;
         this.villagers = new ArrayList<>();
         this.wereWolves = new ArrayList<>();
@@ -154,7 +154,6 @@ public class SimpleGameMediator implements Mediator{
                 }
             }
         }
-
         chosenPlayer = candidates.getFirst();
         System.out.println("Le vote a sélectionné : " + chosenPlayer);
         return chosenPlayer;

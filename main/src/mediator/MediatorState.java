@@ -11,7 +11,7 @@ public class MediatorState implements Mediator {
     private final List<Player> players;
 
     public MediatorState() {
-        this.gameMediator = new NormalMediator(this);
+        this.gameMediator = new BaseRuleMediator(this);
         this.players = new ArrayList<>();
     }
 

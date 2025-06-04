@@ -12,6 +12,7 @@ public class Seer extends Role {
     }
 
     public void activate() {
+
         // Select a player to watch his card
     }
 

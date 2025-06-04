@@ -1,6 +1,6 @@
 
 import mediator.MediatorState;
-import mediator.SimpleGameMediator;
+import mediator.BaseRuleMediator;
 import player.Player;
 
 
@@ -10,7 +10,7 @@ public class Main {
         MediatorState mediatorState = new MediatorState();
         //new MainFrame(mediatorState);
 
-        mediatorState.setGameMediator(new SimpleGameMediator(mediatorState));
+        mediatorState.setGameMediator(new BaseRuleMediator(mediatorState));
 
         DevStuff devStuff = new DevStuff();
         for (Player p : devStuff.players){

@@ -1,6 +1,6 @@
 package ui;
 
-import mediator.NormalMediator;
+import mediator.BaseRuleMediator;
 import player.Player;
 
 import javax.swing.*;
@@ -13,7 +13,7 @@ public class GameFrame extends JFrame {
     public GameFrame(MainFrame mainFrame, List<Player> players) {
         this.mainFrame = mainFrame;
 
-        this.mainFrame.getMediatorState().setGameMediator(new NormalMediator(mainFrame.getMediatorState()));
+        this.mainFrame.getMediatorState().setGameMediator(new BaseRuleMediator(mainFrame.getMediatorState()));
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
