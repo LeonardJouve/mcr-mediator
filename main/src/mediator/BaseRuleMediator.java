@@ -2,6 +2,7 @@ package mediator;
 
 import player.Player;
 import role.*;
+import ui.GameDisplay;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -16,6 +17,7 @@ public class BaseRuleMediator implements Mediator{
     private Seer seer;
     private Witch witch;
     private boolean gameOver;
+    private final GameDisplay gameDisplay;
 
     // les rôles essentiels à attribuer dans une partie de 8 joueurs
     private final static List<BiFunction<Player, Mediator, Role>> primaryRoles = List.of(
@@ -29,7 +31,8 @@ public class BaseRuleMediator implements Mediator{
     );
 
 
-    public BaseRuleMediator(List<Player> players) {
+    public BaseRuleMediator(List<Player> players, GameDisplay display) {
+        this.gameDisplay = display;
         this.villagers = new ArrayList<>();
         this.wereWolves = new ArrayList<>();
         if (!(getMinPlayers() <= players.size() && players.size() <= getMaxPlayers())) {
@@ -45,7 +48,7 @@ public class BaseRuleMediator implements Mediator{
 
     @Override
     public void displayRole(Role role) {
-        //this.ui.displaytruc
+        this.gameDisplay.showRoleReveal(role);
     }
 
     /**
@@ -53,8 +56,16 @@ public class BaseRuleMediator implements Mediator{
      * soit si il n'y a plus assez de villageois pour les battre lors d'un vote de vilalge
      */
     private void computeWinConditions(){
-        if(this.getNiceGuysAlive().noneMatch(Role::isAlive) && this.wereWolves.stream().noneMatch(WereWolf::isAlive))
+        long aliveVillagers = this.getNiceGuysAlive().count();
+        long aliveWerewolves = this.getWereWolvesAlive().count();
+
+        if (aliveWerewolves == 0) {
+            this.gameDisplay.showVillagersWin();
             this.gameOver = true;
+        } else if (aliveWerewolves >= aliveVillagers) {
+            this.gameDisplay.showWerewolvesWin();
+            this.gameOver = true;
+        }
     }
 
     public Stream<Role> getRolesAlive() {
@@ -89,7 +100,10 @@ public class BaseRuleMediator implements Mediator{
             if (voteMap.values().stream().filter((v) -> v == chosenRole.get().getValue()).count() > 1) {
                 continue;
             }
-            chosenRole.ifPresent(r -> r.getKey().kill());
+            chosenRole.ifPresent(r -> {
+                r.getKey().kill();
+                this.gameDisplay.showVoteResults(voteMap,r.getKey());
+            });
             return;
         }
 
