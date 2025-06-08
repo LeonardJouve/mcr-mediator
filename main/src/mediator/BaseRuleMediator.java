@@ -115,17 +115,22 @@ public class BaseRuleMediator implements Mediator{
             return;
         }
         // Le village s'endort
+        this.gameDisplay.showNightStart();
+        this.gameDisplay.showSeerTurn();
         // La voyante se reveille
         if(this.seer != null)
             this.seer.activate();
 
+        this.gameDisplay.showWolvesTurn();
         // demander aux loups-garou de voter pour éliminer un joueur
         this.killVote(getWereWolvesAlive().toList(), getRolesAlive().toList());
 
         // Tour de la sorciere
+        this.gameDisplay.showWitchTurn();
         if(this.witch != null)
             this.witch.activate();
 
+        this.gameDisplay.showDayStart();
         // Le village se reveille
 
         this.computeWinConditions();
