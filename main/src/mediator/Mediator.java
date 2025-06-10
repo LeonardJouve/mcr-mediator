@@ -7,11 +7,10 @@ import player.Player;
 import role.Role;
 
 public interface Mediator {
-    void playTurn();
+    void start();
 
     Stream<Role> getRolesAlive();
     void assignRoles(List<Player> players);
-
 
     int getMinPlayers();
     int getMaxPlayers();
@@ -33,4 +32,6 @@ public interface Mediator {
     void kill(Role role);
 
     void heal(Role role);
+
+    void displayCurrentPlayer(Role role);
 }

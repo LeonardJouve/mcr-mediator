@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 // pour des parties de type "III distribution des cartes pour parties simplifiées" : https://www.regledujeu.fr/loup-garou-regle/
 
-public class BaseRuleMediator implements Mediator{
+public class BaseRuleMediator implements Mediator {
     private final List<Villager> villagers;
     private final List<WereWolf> wereWolves;
     private final List<Role> victims;
@@ -112,7 +112,11 @@ public class BaseRuleMediator implements Mediator{
     }
 
     @Override
-    public void playTurn() {
+    public void start(){
+        this.playTurn();
+    }
+
+    private void playTurn() {
         if (isGameOver()){
             return;
         }
@@ -147,6 +151,8 @@ public class BaseRuleMediator implements Mediator{
         List<Role> allRoles = this.getRolesAlive().toList();
         this.killVote(allRoles,allRoles);
         computeWinConditions();
+
+        this.playTurn();
     }
 
     public void assignRoles(List<Player> players) {
@@ -215,5 +221,8 @@ public class BaseRuleMediator implements Mediator{
         role.heal();
     }
 
-
+    @Override
+    public void displayCurrentPlayer(Role role) {
+        this.gameDisplay.showPlayerName(role);
+    }
 }

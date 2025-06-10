@@ -20,4 +20,5 @@ public interface GameDisplay {
     boolean askHeal();
     boolean askKill();
     Role selectRole(List<Role> roles);
+    void showPlayerName(Role role);
 }

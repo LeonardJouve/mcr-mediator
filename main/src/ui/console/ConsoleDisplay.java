@@ -1,13 +1,20 @@
-package ui;
+package ui.console;
 
 import role.Role;
+import ui.GameDisplay;
+import ui.UserInput;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
-public class ConsoleDisplay implements GameDisplay{
+public class ConsoleDisplay implements GameDisplay {
+    private final UserInput userInput;
+
+    public ConsoleDisplay(UserInput userInput) {
+        this.userInput = userInput;
+    }
+
     @Override
     public void showRoleReveal(Role revealedRole) {
         System.out.println(revealedRole.getPlayer().getName() +
@@ -78,18 +85,17 @@ public class ConsoleDisplay implements GameDisplay{
 
     @Override
     public boolean askHeal() {
-        Random r = new Random();
-        boolean shouldHeal = r.nextBoolean();
+        boolean shouldHeal = this.userInput.askHeal();
         if (shouldHeal) {
             System.out.println("La sorcière utilise une potion de soin");
         }
+
         return shouldHeal;
     }
 
     @Override
     public boolean askKill() {
-        Random r = new Random();
-        boolean shouldKill = r.nextBoolean();
+        boolean shouldKill = this.userInput.askKill();
         if (shouldKill) {
             System.out.println("La sorcière utilise une potion empoisonnée");
         }
@@ -99,11 +105,11 @@ public class ConsoleDisplay implements GameDisplay{
 
     @Override
     public Role selectRole(List<Role> roles) {
-        Random r = new Random();
-        Role role = roles.get(r.nextInt(roles.size()));
+        return this.userInput.selectRole(roles);
+    }
 
-        // System.out.println(role.getPlayer().getName() + " est sélectionné(e)");
-
-        return role;
+    @Override
+    public void showPlayerName(Role role) {
+        System.out.println("Joueur : " + role.getPlayer().getName());
     }
 }
