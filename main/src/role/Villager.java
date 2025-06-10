@@ -8,7 +8,7 @@ public class Villager extends Role {
         super(player, mediator);
     }
 
-    protected void activate() {}
+    public void activate() {}
 
     public String getRoleName() {
         return "Villager";

@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 
 import player.Player;
 import role.Role;
+import ui.GameDisplay;
 
 public interface Mediator {
     void start();
@@ -26,6 +27,8 @@ public interface Mediator {
     boolean askKill();
 
     Role selectRole(List<Role> roles, String reason);
+
+    GameDisplay getGameDisplay();
 
     void displayVictims();
 

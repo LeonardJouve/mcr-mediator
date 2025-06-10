@@ -8,10 +8,13 @@ public class WereWolf extends Role {
        super(player, mediator);
     }
 
-    protected void activate() {}
+    public void activate() {}
 
     public String getRoleName() {
         return "WereWolf";
     }
 
+    public boolean isWereWolf() {
+        return true;
+    }
 }

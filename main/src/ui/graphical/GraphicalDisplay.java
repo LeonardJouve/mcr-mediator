@@ -121,6 +121,11 @@ public class GraphicalDisplay implements GameDisplay {
         log("Egalité des résultats du vote.");
     }
 
+    @Override
+    public void showMessage(String message) {
+        log(message);
+    }
+
     public JComponent getLogComponent() {
         return new JScrollPane(logArea);
     }

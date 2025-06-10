@@ -1,5 +1,6 @@
-package mediator;
+package mediator.alternative;
 
+import mediator.Mediator;
 import player.Player;
 import role.*;
 import ui.GameDisplay;
@@ -7,9 +8,6 @@ import ui.GameDisplay;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
-
-
-// pour des parties de type "III distribution des cartes pour parties simplifiées" : https://www.regledujeu.fr/loup-garou-regle/
 
 public class BaseRuleMediator implements Mediator {
     private final List<Villager> villagers;
@@ -19,6 +17,7 @@ public class BaseRuleMediator implements Mediator {
     private Witch witch;
     private boolean gameOver;
     private final GameDisplay gameDisplay;
+    private WeatherMediator weatherMediator;
 
     // les rôles essentiels à attribuer dans une partie de 8 joueurs
     private final static List<BiFunction<Player, Mediator, Role>> primaryRoles = List.of(
@@ -31,7 +30,6 @@ public class BaseRuleMediator implements Mediator {
             WereWolf::new, Villager::new, Villager::new, Villager::new  // ...
     );
 
-
     public BaseRuleMediator(List<Player> players, GameDisplay display) {
         this.gameDisplay = display;
         this.villagers = new ArrayList<>();
@@ -42,6 +40,34 @@ public class BaseRuleMediator implements Mediator {
         }
         this.assignRoles(players);
         this.gameOver = false;
+        this.weatherMediator = new NormalWeatherMediator(this);
+    }
+
+    void setWeatherMediator(WeatherMediator mediator) {
+        this.weatherMediator = mediator;
+    }
+
+    private void seerTurn() {
+        if(this.seer != null && this.seer.isAlive()) {
+            this.gameDisplay.showSeerTurn(this.seer);
+            this.seer.activate();
+        }
+    }
+
+    private void witchTurn() {
+        if(this.witch != null && this.witch.isAlive()) {
+            this.gameDisplay.showWitchTurn(this.witch);
+            this.witch.activate();
+        }
+    }
+
+    private void wereWolvesTurn() {
+        this.gameDisplay.showWolvesTurn();
+        this.weatherMediator.wereWolvesTurn(this.getWereWolvesAlive().toList(), this.getRolesAlive().toList());
+    }
+
+    private void villagersTurn(){
+        this.weatherMediator.villagersTurn(this.getRolesAlive().toList());
     }
 
     @Override
@@ -58,7 +84,7 @@ public class BaseRuleMediator implements Mediator {
      * Vérifier les conditions de victoire de la partie. La partie s'arrête soit si les loups garous sont tous morts,
      * soit si il n'y a plus assez de villageois pour les battre lors d'un vote de vilalge
      */
-    private void computeWinConditions(){
+    private void computeWinConditions() {
         long aliveVillagers = this.getNiceGuysAlive().count();
         long aliveWerewolves = this.getWereWolvesAlive().count();
 
@@ -88,7 +114,7 @@ public class BaseRuleMediator implements Mediator {
      * @param voters le groupe de votants, ils doivent tous être vivants
      * @param chooseAmong parmi quel sous-ensemble on propose aux votants de voter
      */
-    private void killVote(List<? extends Role> voters, List<Role> chooseAmong) {
+    Role killVote(List<? extends Role> voters, List<Role> chooseAmong) {
         while (true) {
             Map<Role, Integer> voteMap = new HashMap<>();
             for (Role voter : voters) {
@@ -103,12 +129,17 @@ public class BaseRuleMediator implements Mediator {
                 this.gameDisplay.showVoteTie();
                 continue;
             }
-            chosenRole.ifPresent(r -> {
-                this.victims.add(r.getKey());
-                r.getKey().kill();
-                this.gameDisplay.showVoteResults(voteMap,r.getKey());
-            });
-            return;
+
+            if (chosenRole.isEmpty())
+                throw new RuntimeException("No chosen role found");
+
+            Role role = chosenRole.get().getKey();
+
+            this.victims.add(role);
+            role.kill();
+            this.gameDisplay.showVoteResults(voteMap, role);
+
+            return role;
         }
 
     }
@@ -122,40 +153,23 @@ public class BaseRuleMediator implements Mediator {
         if (isGameOver()){
             return;
         }
-
+        this.weatherMediator.trigger();
         this.victims.clear();
-
-        // Le village s'endort
         this.gameDisplay.showNightStart();
-
-        // La voyante se reveille
-        if(this.seer != null && this.seer.isAlive()) {
-            this.gameDisplay.showSeerTurn(this.seer);
-            this.seer.activate();
-        }
-
-        this.gameDisplay.showWolvesTurn();
-        // demander aux loups-garou de voter pour éliminer un joueur
-        this.killVote(getWereWolvesAlive().toList(), getRolesAlive().toList());
-
-        // Tour de la sorciere
-        if(this.witch != null && this.witch.isAlive()) {
-            this.gameDisplay.showWitchTurn(this.witch);
-            this.witch.activate();
-        }
-
-        // Le village se reveille
+        this.seerTurn();
+        this.wereWolvesTurn();
+        this.witchTurn();
         this.gameDisplay.showDayStart(this.victims);
 
         this.computeWinConditions();
         if (gameOver) return;
 
-        List<Role> allRoles = this.getRolesAlive().toList();
-        this.killVote(allRoles,allRoles);
-        computeWinConditions();
+        this.villagersTurn();
 
+        this.computeWinConditions();
         this.playTurn();
     }
+
 
     public void assignRoles(List<Player> players) {
         Collections.shuffle(players);
@@ -226,5 +240,10 @@ public class BaseRuleMediator implements Mediator {
     @Override
     public void displayCurrentPlayer(Role role) {
         this.gameDisplay.showPlayerName(role);
+    }
+
+    @Override
+    public GameDisplay getGameDisplay() {
+        return this.gameDisplay;
     }
 }

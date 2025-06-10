@@ -7,7 +7,7 @@ import role.Witch;
 import java.util.List;
 import java.util.Map;
 
-public interface GameDisplay {
+public interface GameDisplay extends UserInput {
     void showRoleReveal(Role revealedRole);
     void showNightStart();
     void showDayStart(List<Role> victims);
@@ -19,9 +19,7 @@ public interface GameDisplay {
     void showVictims(List<Role> roles);
     void showVillagersWin();
     void showWerewolvesWin();
-    boolean askHeal();
-    boolean askKill();
-    Role selectRole(List<Role> roles, String reason);
     void showPlayerName(Role role);
     void showVoteTie();
+    void showMessage(String message);
 }

@@ -5,6 +5,10 @@ import player.Player;
 
 import java.util.List;
 
+/**
+ * Role represents a role during a game of The Werewolves of Millers Hollow.
+ * Possible roles could be : https://www.murderama.fr/blog/tous-les-roles-du-loup-garou-guide-complet
+ */
 public abstract class Role {
     private boolean isAlive;
     protected Mediator mediator;
@@ -13,6 +17,11 @@ public abstract class Role {
     private static int nextId = 1;
     private final int id;
 
+    /**
+     * Constructor for class Role
+     * @param player the player that will play this role
+     * @param mediator the mediator of this role
+     */
     public Role(Player player, Mediator mediator) {
         this.id = nextId++;
         this.isAlive = true;
@@ -21,24 +30,47 @@ public abstract class Role {
         this.player = player;
     }
 
+    /**
+     * Getter for the player attribute of the instance.
+     * @return reference to the player attribute of the instance.
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Getter for the id attribute of the instance.
+     * @return value of the id attribute of the instance.
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Abstract getter for the name of the role
+     * @return the name of the concrete role.
+     */
     public abstract String getRoleName();
 
 
+    /**
+     * Getter for the isAlive attribute of the instance.
+     * @return true if the role is alive, false otherwise.
+     */
     public boolean isAlive() {
         return isAlive;
     }
-    
-    protected abstract void activate();
 
-    
+    /**
+     * Activates the action of the concrete role.
+     */
+    public abstract void activate();
+
+    /**
+     * 
+     * @param roles
+     * @return
+     */
     public Role vote(List<Role> roles) {
         this.mediator.displayCurrentPlayer(this);
         return this.mediator.selectRole(roles, "voter contre lui");
@@ -50,5 +82,9 @@ public abstract class Role {
 
     public void heal() {
         this.isAlive = true;
+    }
+
+    public boolean isWereWolf() {
+        return false;
     }
 }

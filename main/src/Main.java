@@ -1,10 +1,8 @@
 
-import mediator.BaseRuleMediator;
+import mediator.alternative.BaseRuleMediator;
 import mediator.Mediator;
 import player.Player;
 import ui.RandomInput;
-import ui.console.ConsoleDisplay;
-import ui.graphical.GraphicalInput;
 import ui.graphical.MainFrame;
 
 import java.util.ArrayList;
@@ -37,6 +35,14 @@ public class Main {
 //        manualframe.setVisible(true);
 //        manualmediator.start();
         // --------------------------------------
+
+        // Auto console
+        // --------------------------------------
+//        GameDisplay display = new ConsoleDisplay(new RandomInput());
+//        Mediator autoMediator = new BaseRuleMediator(players, display);
+//        autoMediator.start();
+        // --------------------------------------
+
         System.out.println("Finished");
     }
 }

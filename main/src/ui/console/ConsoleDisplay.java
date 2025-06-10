@@ -119,4 +119,9 @@ public class ConsoleDisplay implements GameDisplay {
     public void showVoteTie() {
         System.out.println("Egalité des résultats du vote.");
     }
+
+    @Override
+    public void showMessage(String message) {
+        System.out.println(message);
+    }
 }
