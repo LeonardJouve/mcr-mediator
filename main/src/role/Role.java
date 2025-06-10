@@ -4,7 +4,6 @@ import mediator.Mediator;
 import player.Player;
 
 import java.util.List;
-import java.util.Random;
 
 public abstract class Role {
     private boolean isAlive;
@@ -41,26 +40,15 @@ public abstract class Role {
 
 
     // choisir un joueur parmi plusieurs choix. Nécéssaire de pouvoir le faire puisqu'on connaît rarement les rôles
-    public Role vote(List<Role> l) {
-        Random r = new Random();
-        int randomWithRandom = r.nextInt(l.size());  // Choix aléatoire, a changer pour choix volontaire
-        return l.get(randomWithRandom);
-    }
-
-    public void play() {
-        if (!this.isAlive) {
-            return;
-        }
-
-        this.activate();
+    public Role vote(List<Role> roles) {
+        return this.mediator.selectRole(roles);
     }
 
     public void kill() {
         this.isAlive = false;
     }
 
-
-    public String toString(){
-        return getRoleName() + "#" + getId() + " (" + getPlayer().getName() + ")";
+    public void heal() {
+        this.isAlive = true;
     }
 }

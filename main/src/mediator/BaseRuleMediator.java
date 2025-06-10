@@ -23,12 +23,12 @@ public class BaseRuleMediator implements Mediator{
     // les rôles essentiels à attribuer dans une partie de 8 joueurs
     private final static List<BiFunction<Player, Mediator, Role>> primaryRoles = List.of(
             WereWolf::new, WereWolf::new, Seer::new, Villager::new,
-            Villager::new, Villager::new, Villager::new, Villager::new
+            Villager::new, Villager::new, Witch::new, Villager::new
     );
 
     // rôles à attribuer en plus si assez de joueurs
     private final static List<BiFunction<Player,Mediator, Role>> otherRoles = List.of(
-            Villager::new, Villager::new, Villager::new, WereWolf::new  // ...
+            WereWolf::new, Villager::new, Villager::new, Villager::new  // ...
     );
 
 
@@ -37,7 +37,7 @@ public class BaseRuleMediator implements Mediator{
         this.villagers = new ArrayList<>();
         this.wereWolves = new ArrayList<>();
         this.victims = new ArrayList<>();
-        if (!(getMinPlayers() <= players.size() && players.size() <= getMaxPlayers())) {
+        if (players.size() < getMinPlayers() || players.size() > getMaxPlayers()) {
             throw new IllegalArgumentException("Not enough player or too many players.");
         }
         this.assignRoles(players);
@@ -121,22 +121,25 @@ public class BaseRuleMediator implements Mediator{
 
         // Le village s'endort
         this.gameDisplay.showNightStart();
-        this.gameDisplay.showSeerTurn();
+
         // La voyante se reveille
-        if(this.seer != null)
+        if(this.seer != null && this.seer.isAlive()) {
+            this.gameDisplay.showSeerTurn();
             this.seer.activate();
+        }
 
         this.gameDisplay.showWolvesTurn();
         // demander aux loups-garou de voter pour éliminer un joueur
         this.killVote(getWereWolvesAlive().toList(), getRolesAlive().toList());
 
         // Tour de la sorciere
-        this.gameDisplay.showWitchTurn();
-        if(this.witch != null)
+        if(this.witch != null && this.witch.isAlive()) {
+            this.gameDisplay.showWitchTurn();
             this.witch.activate();
+        }
 
-        this.gameDisplay.showDayStart(this.victims);
         // Le village se reveille
+        this.gameDisplay.showDayStart(this.victims);
 
         this.computeWinConditions();
         if (gameOver) return;
@@ -174,5 +177,43 @@ public class BaseRuleMediator implements Mediator{
     public int getMaxPlayers() {
         return 18;
     }
+
+    @Override
+    public List<Role> getVictims() {
+        return this.victims;
+    }
+
+    @Override
+    public boolean askHeal() {
+        return this.gameDisplay.askHeal();
+    }
+
+    @Override
+    public boolean askKill() {
+        return this.gameDisplay.askKill();
+    }
+
+    @Override
+    public Role selectRole(List<Role> roles) {
+        return this.gameDisplay.selectRole(roles);
+    }
+
+    @Override
+    public void displayVictims() {
+        this.gameDisplay.showVictims(this.victims);
+    }
+
+    @Override
+    public void kill(Role role) {
+        this.victims.add(role);
+        role.kill();
+    }
+
+    @Override
+    public void heal(Role role) {
+        this.victims.removeIf((r) -> r.getId() == role.getId());
+        role.heal();
+    }
+
 
 }

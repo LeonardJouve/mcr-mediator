@@ -14,7 +14,10 @@ public interface GameDisplay {
     void showWitchTurn();
     void showVoteResults(Map<Role, Integer> votes, Role eliminated);
     void showGameOver(String winner);
-    void showPlayerList(List<Role> roles);
+    void showVictims(List<Role> roles);
     void showVillagersWin();
     void showWerewolvesWin();
+    boolean askHeal();
+    boolean askKill();
+    Role selectRole(List<Role> roles);
 }

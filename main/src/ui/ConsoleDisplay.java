@@ -4,12 +4,13 @@ import role.Role;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class ConsoleDisplay implements GameDisplay{
     @Override
     public void showRoleReveal(Role revealedRole) {
-        System.out.println("[VOYANTE] " + revealedRole.getPlayer().getName() +
+        System.out.println(revealedRole.getPlayer().getName() +
                 " est un " + revealedRole.getRoleName());
     }
 
@@ -22,7 +23,7 @@ public class ConsoleDisplay implements GameDisplay{
     public void showDayStart(List<Role> victims) {
         System.out.println("\n=== JOUR ===");
         System.out.println("Le village se réveille sans:");
-        System.out.println(victims.stream().map((r) -> r.getPlayer().getName() + ": " + r.getRoleName()).collect(Collectors.joining(", ", "[", "]")));
+        victims.forEach(this::showRoleReveal);
     }
 
     @Override
@@ -58,11 +59,11 @@ public class ConsoleDisplay implements GameDisplay{
     }
 
     @Override
-    public void showPlayerList(List<Role> roles) {
-        System.out.println("=== JOUEURS ===");
-        roles.forEach(role ->
-                System.out.println("- " + role.getPlayer().getName() +
-                        " (" + role.getRoleName() + ")"));
+    public void showVictims(List<Role> roles) {
+        System.out.println("Les victimes sont: " + roles
+                .stream()
+                .map((r) -> r.getPlayer().getName())
+                .collect(Collectors.joining(", ", "[", "]")));
     }
 
     @Override
@@ -73,5 +74,36 @@ public class ConsoleDisplay implements GameDisplay{
     @Override
     public void showWerewolvesWin() {
         showGameOver("loups-garous");
+    }
+
+    @Override
+    public boolean askHeal() {
+        Random r = new Random();
+        boolean shouldHeal = r.nextBoolean();
+        if (shouldHeal) {
+            System.out.println("La sorcière utilise une potion de soin");
+        }
+        return shouldHeal;
+    }
+
+    @Override
+    public boolean askKill() {
+        Random r = new Random();
+        boolean shouldKill = r.nextBoolean();
+        if (shouldKill) {
+            System.out.println("La sorcière utilise une potion empoisonnée");
+        }
+
+        return shouldKill;
+    }
+
+    @Override
+    public Role selectRole(List<Role> roles) {
+        Random r = new Random();
+        Role role = roles.get(r.nextInt(roles.size()));
+
+        // System.out.println(role.getPlayer().getName() + " est sélectionné(e)");
+
+        return role;
     }
 }

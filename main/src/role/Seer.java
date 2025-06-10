@@ -4,7 +4,6 @@ import mediator.Mediator;
 import player.Player;
 
 import java.util.List;
-import java.util.Random;
 
 public class Seer extends Role {
     public Seer(Player player, Mediator mediator) {
@@ -12,13 +11,10 @@ public class Seer extends Role {
     }
 
     public void activate() {
-
         // Select a player to watch his card
-        Random rand = new Random();
-        List<Role> players = this.mediator.getRolesAlive().toList();
-        Role p = players.get(rand.nextInt(players.size()));
-        this.mediator.displayRole(p);
-        // Wait for ok
+        List<Role> roles = this.mediator.getRolesAlive().toList();
+        Role role = this.mediator.selectRole(roles);
+        this.mediator.displayRole(role);
     }
 
     public String getRoleName() {

@@ -3,13 +3,36 @@ package role;
 import mediator.Mediator;
 import player.Player;
 
+import java.util.List;
+
 public class Witch extends Role {
+    private boolean canHeal;
+    private boolean canKill;
+
     public Witch(Player player, Mediator mediator) {
         super(player, mediator);
+        this.canHeal = true;
+        this.canKill = true;
     }
 
     public void activate() {
-        // Show victim and select if you want to heal or kill
+        // Show victim
+        List<Role> victims = this.mediator.getVictims();
+        this.mediator.displayVictims();
+
+        // use heal potion
+        if (this.canHeal && this.mediator.askHeal()) {
+            Role role = this.mediator.selectRole(victims);
+            this.mediator.heal(role);
+            this.canHeal = false;
+        }
+
+        // use poison potion
+        if (this.canKill && this.mediator.askKill()) {
+            Role role = this.mediator.selectRole(this.mediator.getRolesAlive().toList());
+            this.mediator.kill(role);
+            this.canKill = false;
+        }
     }
 
     public String getRoleName() {

@@ -1,4 +1,3 @@
-./DevStuff.java
 ./ui/MainFrame.java
 ./ui/GameFrame.java
 ./ui/RoomCreationFrame.java

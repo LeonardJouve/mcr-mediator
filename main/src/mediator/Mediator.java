@@ -19,4 +19,18 @@ public interface Mediator {
     boolean isGameOver();
 
     void displayRole(Role role);
+
+    List<Role> getVictims();
+
+    boolean askHeal();
+
+    boolean askKill();
+
+    Role selectRole(List<Role> roles);
+
+    void displayVictims();
+
+    void kill(Role role);
+
+    void heal(Role role);
 }
