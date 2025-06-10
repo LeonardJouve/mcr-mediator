@@ -8,12 +8,33 @@ import role.Role;
 import ui.GameDisplay;
 
 public interface Mediator {
+    /**
+     * Starts the game.
+     */
     void start();
 
+    /**
+     * Gets all remaining living roles
+     * @return a Stream of all remaining living roles in the game.
+     */
     Stream<Role> getRolesAlive();
+
+    /**
+     * Assign a role to a list of players
+     * @param players the players we want to assign a role to.
+     */
     void assignRoles(List<Player> players);
 
+    /**
+     * Gets the minimum number of players needed for the game to start.
+     * @return the minimum number of players needed for the game to start.
+     */
     int getMinPlayers();
+
+    /**
+     * Gets the maximum number of players allowed for the game to start.
+     * @return the maximum number of players allowed for the game to start.
+     */
     int getMaxPlayers();
 
     boolean isGameOver();

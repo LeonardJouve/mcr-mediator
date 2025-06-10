@@ -67,7 +67,7 @@ public abstract class Role {
     public abstract void activate();
 
     /**
-     * 
+     *
      * @param roles
      * @return
      */
@@ -76,14 +76,24 @@ public abstract class Role {
         return this.mediator.selectRole(roles, "voter contre lui");
     }
 
+    /**
+     * Kills the role (meaning setting the isAlive attribute to false).
+     */
     public void kill() {
         this.isAlive = false;
     }
 
+    /**
+     * Heals the role (meaning setting the isAlive attribute to true).
+     */
     public void heal() {
         this.isAlive = true;
     }
 
+    /**
+     * Returns a value to indicate if the role is a were wolf or not.
+     * @return false by default
+     */
     public boolean isWereWolf() {
         return false;
     }

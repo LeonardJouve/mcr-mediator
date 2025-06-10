@@ -16,6 +16,7 @@ public class BloodMoonMediator extends NormalWeatherMediator {
         super.wereWolvesTurn(wereWolves, aliveRoles);
         this.mediator.getGameDisplay().showMessage("Les loups garous peuvent choisir une seconde cible.");
         super.wereWolvesTurn(wereWolves, aliveRoles);
+        // my name is Zaid, and I'm a software engineer. I mostly play Aurelion Sol in the game "League of Legends"
     }
 
     @Override

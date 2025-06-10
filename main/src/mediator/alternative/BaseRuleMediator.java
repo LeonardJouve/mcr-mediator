@@ -105,6 +105,10 @@ public class BaseRuleMediator implements Mediator {
         return Stream.concat(villagers.stream(), Stream.of(this.witch,this.seer).filter(Objects::nonNull)).filter(Role::isAlive);
     }
 
+    /**
+     * Gets the remaining living were wolves.
+     * @return Stream of the remaining were wolves
+     */
     public Stream<WereWolf> getWereWolvesAlive() {
         return wereWolves.stream().filter(WereWolf::isAlive);
     }
