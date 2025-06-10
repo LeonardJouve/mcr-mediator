@@ -9,6 +9,9 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
+/**
+ * Mediator that runs a basic game.
+ */
 public class BaseRuleMediator implements Mediator {
     private final List<Villager> villagers;
     private final List<WereWolf> wereWolves;
@@ -19,17 +22,26 @@ public class BaseRuleMediator implements Mediator {
     private final GameDisplay gameDisplay;
     private WeatherMediator weatherMediator;
 
-    // les rôles essentiels à attribuer dans une partie de 8 joueurs
+    /**
+     * These are the essential roles to attribute in a minimal basic game.
+     */
     private final static List<BiFunction<Player, Mediator, Role>> primaryRoles = List.of(
             WereWolf::new, WereWolf::new, Seer::new, Villager::new,
             Villager::new, Villager::new, Witch::new, Villager::new
     );
 
-    // rôles à attribuer en plus si assez de joueurs
+    /**
+     * These are other roles to attribute for a basic game
+     */
     private final static List<BiFunction<Player,Mediator, Role>> otherRoles = List.of(
             WereWolf::new, Villager::new, Villager::new, Villager::new  // ...
     );
 
+    /**
+     * Constructor for the BaseRuleMediator
+     * @param players the list of players for the game
+     * @param display the instance that will handle the display of the game.
+     */
     public BaseRuleMediator(List<Player> players, GameDisplay display) {
         this.gameDisplay = display;
         this.villagers = new ArrayList<>();
@@ -43,10 +55,17 @@ public class BaseRuleMediator implements Mediator {
         this.weatherMediator = new NormalWeatherMediator(this);
     }
 
+    /**
+     * Setter for a WhetherMediator
+     * @param mediator the instance of WeatherMediator to set
+     */
     void setWeatherMediator(WeatherMediator mediator) {
         this.weatherMediator = mediator;
     }
 
+    /**
+     * Plays the seer turn.
+     */
     private void seerTurn() {
         if(this.seer != null && this.seer.isAlive()) {
             this.gameDisplay.showSeerTurn(this.seer);
@@ -54,6 +73,9 @@ public class BaseRuleMediator implements Mediator {
         }
     }
 
+    /**
+     * Plays the witch turn.
+     */
     private void witchTurn() {
         if(this.witch != null && this.witch.isAlive()) {
             this.gameDisplay.showWitchTurn(this.witch);
@@ -61,20 +83,32 @@ public class BaseRuleMediator implements Mediator {
         }
     }
 
+    /**
+     * Plays the were wolves turn.
+     */
     private void wereWolvesTurn() {
         this.gameDisplay.showWolvesTurn();
         this.weatherMediator.wereWolvesTurn(this.getWereWolvesAlive().toList(), this.getRolesAlive().toList());
     }
 
+    /**
+     * PLays the villagers turn.
+     */
     private void villagersTurn(){
         this.weatherMediator.villagersTurn(this.getRolesAlive().toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isGameOver() {
         return gameOver;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void displayRole(Role role) {
         this.gameDisplay.showRoleReveal(role);
@@ -148,15 +182,19 @@ public class BaseRuleMediator implements Mediator {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void start(){
-        this.playTurn();
+        while (!isGameOver()) this.playTurn();
+
     }
 
+    /**
+     * Plays a turn.
+     */
     private void playTurn() {
-        if (isGameOver()){
-            return;
-        }
         this.weatherMediator.trigger();
         this.victims.clear();
         this.gameDisplay.showNightStart();
@@ -171,10 +209,12 @@ public class BaseRuleMediator implements Mediator {
         this.villagersTurn();
 
         this.computeWinConditions();
-        this.playTurn();
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void assignRoles(List<Player> players) {
         Collections.shuffle(players);
 
@@ -194,31 +234,50 @@ public class BaseRuleMediator implements Mediator {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMinPlayers() {
         return 8;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getMaxPlayers() {
         return 18;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Role> getVictims() {
         return this.victims;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean askHeal() {
         return this.gameDisplay.askHeal();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean askKill() {
         return this.gameDisplay.askKill();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Role selectRole(List<Role> roles, String reason) {
         return this.gameDisplay.selectRole(roles, reason);
@@ -229,12 +288,18 @@ public class BaseRuleMediator implements Mediator {
         this.gameDisplay.showVictims(this.victims);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void kill(Role role) {
         this.victims.add(role);
         role.kill();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void heal(Role role) {
         this.victims.removeIf((r) -> r.getId() == role.getId());
