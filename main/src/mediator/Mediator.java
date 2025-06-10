@@ -7,6 +7,11 @@ import player.Player;
 import role.Role;
 import ui.GameDisplay;
 
+/**
+ * Mediator interface for the game.
+ * This interface defines the methods that a mediator must implement to control the game flow,
+ * manage roles, and interact with players.
+ */
 public interface Mediator {
     /**
      * Starts the game.
