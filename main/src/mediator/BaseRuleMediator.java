@@ -44,6 +44,7 @@ public class BaseRuleMediator implements Mediator {
         this.gameOver = false;
     }
 
+    @Override
     public boolean isGameOver() {
         return gameOver;
     }
@@ -69,7 +70,7 @@ public class BaseRuleMediator implements Mediator {
             this.gameOver = true;
         }
     }
-
+    @Override
     public Stream<Role> getRolesAlive() {
         return Stream.concat(getWereWolvesAlive(), getNiceGuysAlive());
     }
@@ -99,6 +100,7 @@ public class BaseRuleMediator implements Mediator {
                     .max(Map.Entry.comparingByValue());
 
             if (voteMap.values().stream().filter((v) -> Objects.equals(v, chosenRole.get().getValue())).count() > 1) {
+                this.gameDisplay.showVoteTie();
                 continue;
             }
             chosenRole.ifPresent(r -> {
@@ -128,7 +130,7 @@ public class BaseRuleMediator implements Mediator {
 
         // La voyante se reveille
         if(this.seer != null && this.seer.isAlive()) {
-            this.gameDisplay.showSeerTurn();
+            this.gameDisplay.showSeerTurn(this.seer);
             this.seer.activate();
         }
 
@@ -138,7 +140,7 @@ public class BaseRuleMediator implements Mediator {
 
         // Tour de la sorciere
         if(this.witch != null && this.witch.isAlive()) {
-            this.gameDisplay.showWitchTurn();
+            this.gameDisplay.showWitchTurn(this.witch);
             this.witch.activate();
         }
 
@@ -200,8 +202,8 @@ public class BaseRuleMediator implements Mediator {
     }
 
     @Override
-    public Role selectRole(List<Role> roles) {
-        return this.gameDisplay.selectRole(roles);
+    public Role selectRole(List<Role> roles, String reason) {
+        return this.gameDisplay.selectRole(roles, reason);
     }
 
     @Override

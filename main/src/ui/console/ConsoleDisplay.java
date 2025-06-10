@@ -1,6 +1,8 @@
 package ui.console;
 
 import role.Role;
+import role.Seer;
+import role.Witch;
 import ui.GameDisplay;
 import ui.UserInput;
 
@@ -34,8 +36,8 @@ public class ConsoleDisplay implements GameDisplay {
     }
 
     @Override
-    public void showSeerTurn() {
-        System.out.println("La voyante se réveille...");
+    public void showSeerTurn(Seer seer) {
+        System.out.println("La voyante (" + seer.getPlayer().getName() + ") se réveille...");
     }
 
     @Override
@@ -44,8 +46,8 @@ public class ConsoleDisplay implements GameDisplay {
     }
 
     @Override
-    public void showWitchTurn() {
-        System.out.println("La sorcière se réveille...");
+    public void showWitchTurn(Witch witch) {
+        System.out.println("La sorcière (" + witch.getPlayer().getName() + ")  se réveille...");
     }
 
     @Override
@@ -104,12 +106,17 @@ public class ConsoleDisplay implements GameDisplay {
     }
 
     @Override
-    public Role selectRole(List<Role> roles) {
-        return this.userInput.selectRole(roles);
+    public Role selectRole(List<Role> roles, String reason) {
+        return this.userInput.selectRole(roles, reason);
     }
 
     @Override
     public void showPlayerName(Role role) {
         System.out.println("Joueur : " + role.getPlayer().getName());
+    }
+
+    @Override
+    public void showVoteTie() {
+        System.out.println("Egalité des résultats du vote.");
     }
 }

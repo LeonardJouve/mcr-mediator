@@ -1,6 +1,8 @@
 package ui;
 
 import role.Role;
+import role.Seer;
+import role.Witch;
 
 import java.util.List;
 import java.util.Map;
@@ -9,9 +11,9 @@ public interface GameDisplay {
     void showRoleReveal(Role revealedRole);
     void showNightStart();
     void showDayStart(List<Role> victims);
-    void showSeerTurn();
+    void showSeerTurn(Seer seer);
     void showWolvesTurn();
-    void showWitchTurn();
+    void showWitchTurn(Witch witch);
     void showVoteResults(Map<Role, Integer> votes, Role eliminated);
     void showGameOver(String winner);
     void showVictims(List<Role> roles);
@@ -19,6 +21,7 @@ public interface GameDisplay {
     void showWerewolvesWin();
     boolean askHeal();
     boolean askKill();
-    Role selectRole(List<Role> roles);
+    Role selectRole(List<Role> roles, String reason);
     void showPlayerName(Role role);
+    void showVoteTie();
 }

@@ -32,13 +32,13 @@ public class GraphicalInput implements UserInput {
     }
 
     @Override
-    public Role selectRole(List<Role> roles) {
+    public Role selectRole(List<Role> roles, String reason) {
         Object[] options = roles.stream()
                 .map(role -> role.getPlayer().getName())
                 .toArray();
 
         String selection = (String) JOptionPane.showInputDialog(parentFrame,
-                "Choisissez un joueur:",
+                "Choisissez un joueur pour " + reason + ":",
                 "Sélection",
                 JOptionPane.PLAIN_MESSAGE,
                 null,

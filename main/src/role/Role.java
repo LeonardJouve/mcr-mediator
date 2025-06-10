@@ -38,11 +38,10 @@ public abstract class Role {
     
     protected abstract void activate();
 
-
-    // choisir un joueur parmi plusieurs choix. Nécéssaire de pouvoir le faire puisqu'on connaît rarement les rôles
+    
     public Role vote(List<Role> roles) {
         this.mediator.displayCurrentPlayer(this);
-        return this.mediator.selectRole(roles);
+        return this.mediator.selectRole(roles, "voter contre lui");
     }
 
     public void kill() {

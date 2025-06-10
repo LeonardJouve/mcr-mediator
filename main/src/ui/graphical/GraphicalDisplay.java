@@ -1,6 +1,8 @@
 package ui.graphical;
 
 import role.Role;
+import role.Seer;
+import role.Witch;
 import ui.GameDisplay;
 import ui.UserInput;
 
@@ -47,8 +49,8 @@ public class GraphicalDisplay implements GameDisplay {
     }
 
     @Override
-    public void showSeerTurn() {
-        log("La voyante se réveille...");
+    public void showSeerTurn(Seer seer) {
+        log("La voyante (" + seer.getPlayer().getName() + ") se réveille...");
     }
 
     @Override
@@ -57,8 +59,8 @@ public class GraphicalDisplay implements GameDisplay {
     }
 
     @Override
-    public void showWitchTurn() {
-        log("La sorcière se réveille...");
+    public void showWitchTurn(Witch witch) {
+        log("La sorcière (" + witch.getPlayer().getName() + ") se réveille...");
     }
 
     @Override
@@ -105,8 +107,8 @@ public class GraphicalDisplay implements GameDisplay {
     }
 
     @Override
-    public Role selectRole(List<Role> roles) {
-        return this.userInput.selectRole(roles);
+    public Role selectRole(List<Role> roles, String reason) {
+        return this.userInput.selectRole(roles, reason);
     }
 
     @Override
@@ -114,6 +116,10 @@ public class GraphicalDisplay implements GameDisplay {
         log("Joueur : " + role.getPlayer().getName());
     }
 
+    @Override
+    public void showVoteTie() {
+        log("Egalité des résultats du vote.");
+    }
 
     public JComponent getLogComponent() {
         return new JScrollPane(logArea);

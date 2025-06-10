@@ -19,7 +19,7 @@ public class RandomInput implements UserInput {
     }
 
     @Override
-    public Role selectRole(List<Role> roles) {
+    public Role selectRole(List<Role> roles, String reason) {
         return roles.get(r.nextInt(roles.size()));
     }
 }

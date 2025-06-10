@@ -13,7 +13,7 @@ public class Seer extends Role {
     public void activate() {
         // Select a player to watch his card
         List<Role> roles = this.mediator.getRolesAlive().toList();
-        Role role = this.mediator.selectRole(roles);
+        Role role = this.mediator.selectRole(roles, "voir sa carte");
         this.mediator.displayRole(role);
     }
 

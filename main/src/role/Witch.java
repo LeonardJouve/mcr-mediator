@@ -22,14 +22,14 @@ public class Witch extends Role {
 
         // use heal potion
         if (this.canHeal && this.mediator.askHeal()) {
-            Role role = this.mediator.selectRole(victims);
+            Role role = this.mediator.selectRole(victims, "le soiger");
             this.mediator.heal(role);
             this.canHeal = false;
         }
 
         // use poison potion
         if (this.canKill && this.mediator.askKill()) {
-            Role role = this.mediator.selectRole(this.mediator.getRolesAlive().toList());
+            Role role = this.mediator.selectRole(this.mediator.getRolesAlive().toList(), "le tuer");
             this.mediator.kill(role);
             this.canKill = false;
         }

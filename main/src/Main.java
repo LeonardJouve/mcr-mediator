@@ -2,11 +2,10 @@
 import mediator.BaseRuleMediator;
 import mediator.Mediator;
 import player.Player;
-import ui.GameDisplay;
-import ui.graphical.MainFrame;
-import ui.UserInput;
-import ui.graphical.GraphicalDisplay;
+import ui.RandomInput;
+import ui.console.ConsoleDisplay;
 import ui.graphical.GraphicalInput;
+import ui.graphical.MainFrame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +22,21 @@ public class Main {
             new Player("Fabien"),
             new Player("Elise")
         ));
-        MainFrame frame = new MainFrame();
-        Mediator mediator = new BaseRuleMediator(players, frame.getDisplay());
+        // Auto graphical
+        // --------------------------------------
+        MainFrame autoframe = new MainFrame(new RandomInput());
+        Mediator automediator = new BaseRuleMediator(players, autoframe.getDisplay());
+        autoframe.setVisible(true);
+        automediator.start();
+        // --------------------------------------
 
-        frame.setVisible(true);
-        mediator.start();
+        // Manual graphical
+        // --------------------------------------
+//        MainFrame manualframe = new MainFrame();
+//        Mediator manualmediator = new BaseRuleMediator(players, manualframe.getDisplay());
+//        manualframe.setVisible(true);
+//        manualmediator.start();
+        // --------------------------------------
         System.out.println("Finished");
     }
 }
