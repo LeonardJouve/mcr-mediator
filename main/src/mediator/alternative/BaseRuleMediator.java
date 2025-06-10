@@ -88,7 +88,8 @@ public class BaseRuleMediator implements Mediator {
      */
     private void wereWolvesTurn() {
         this.gameDisplay.showWolvesTurn();
-        this.weatherMediator.wereWolvesTurn(this.getWereWolvesAlive().toList(), this.getRolesAlive().toList());
+        List<Role> targetsAlive = new ArrayList<>(this.getRolesAlive().toList());
+        this.weatherMediator.wereWolvesTurn(this.getWereWolvesAlive().toList(), targetsAlive);
     }
 
     /**
@@ -175,6 +176,7 @@ public class BaseRuleMediator implements Mediator {
 
             this.victims.add(role);
             role.kill();
+            chooseAmong.remove(role);
             this.gameDisplay.showVoteResults(voteMap, role);
 
             return role;
