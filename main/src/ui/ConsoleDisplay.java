@@ -4,6 +4,7 @@ import role.Role;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ConsoleDisplay implements GameDisplay{
     @Override
@@ -18,8 +19,10 @@ public class ConsoleDisplay implements GameDisplay{
     }
 
     @Override
-    public void showDayStart() {
+    public void showDayStart(List<Role> victims) {
         System.out.println("\n=== JOUR ===");
+        System.out.println("Le village se réveille sans:");
+        System.out.println(victims.stream().map((r) -> r.getPlayer().getName() + ": " + r.getRoleName()).collect(Collectors.joining(", ", "[", "]")));
     }
 
     @Override

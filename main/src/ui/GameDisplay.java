@@ -8,7 +8,7 @@ import java.util.Map;
 public interface GameDisplay {
     void showRoleReveal(Role revealedRole);
     void showNightStart();
-    void showDayStart();
+    void showDayStart(List<Role> victims);
     void showSeerTurn();
     void showWolvesTurn();
     void showWitchTurn();

@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 public class BaseRuleMediator implements Mediator{
     private final List<Villager> villagers;
     private final List<WereWolf> wereWolves;
+    private final List<Role> victims;
     private Seer seer;
     private Witch witch;
     private boolean gameOver;
@@ -35,6 +36,7 @@ public class BaseRuleMediator implements Mediator{
         this.gameDisplay = display;
         this.villagers = new ArrayList<>();
         this.wereWolves = new ArrayList<>();
+        this.victims = new ArrayList<>();
         if (!(getMinPlayers() <= players.size() && players.size() <= getMaxPlayers())) {
             throw new IllegalArgumentException("Not enough player or too many players.");
         }
@@ -84,7 +86,6 @@ public class BaseRuleMediator implements Mediator{
      * Cette fonction existe pour créer un vote, par exemple quand les loups garous ou le village doivent voter pour l'élimination d'un villageois,
      * @param voters le groupe de votants, ils doivent tous être vivants
      * @param chooseAmong parmi quel sous-ensemble on propose aux votants de voter
-     * @return le joueur sélectionné
      */
     private void killVote(List<? extends Role> voters, List<Role> chooseAmong) {
         while (true) {
@@ -97,10 +98,11 @@ public class BaseRuleMediator implements Mediator{
                     .stream()
                     .max(Map.Entry.comparingByValue());
 
-            if (voteMap.values().stream().filter((v) -> v == chosenRole.get().getValue()).count() > 1) {
+            if (voteMap.values().stream().filter((v) -> Objects.equals(v, chosenRole.get().getValue())).count() > 1) {
                 continue;
             }
             chosenRole.ifPresent(r -> {
+                this.victims.add(r.getKey());
                 r.getKey().kill();
                 this.gameDisplay.showVoteResults(voteMap,r.getKey());
             });
@@ -114,6 +116,9 @@ public class BaseRuleMediator implements Mediator{
         if (isGameOver()){
             return;
         }
+
+        this.victims.clear();
+
         // Le village s'endort
         this.gameDisplay.showNightStart();
         this.gameDisplay.showSeerTurn();
@@ -130,7 +135,7 @@ public class BaseRuleMediator implements Mediator{
         if(this.witch != null)
             this.witch.activate();
 
-        this.gameDisplay.showDayStart();
+        this.gameDisplay.showDayStart(this.victims);
         // Le village se reveille
 
         this.computeWinConditions();
