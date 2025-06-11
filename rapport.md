@@ -20,7 +20,7 @@ champ `isAlive` pour savoir si le joueur est encore en vie.
 Rôles implémentés :
 
 - **Loup-garou** : Peuvent voter afin de choisir un joueur à éliminer pendant la nuit.
-- **Villageois** : Ne possède pas de pouvoir spécial, mais participe aux discussions et durant le jour peut voter pour
+- **Villageois** : Ne possède pas de pouvoir spécial, mais participe aux discussions durant le jour et peut voter pour
   éliminer un joueur.
 - **Voyante** : Peut découvrir le rôle d'un joueur pendant la nuit.
 - **Sorcière** : Possède deux potions, une pour sauver un joueur et une pour tuer un joueur, qu'elle peut utiliser
@@ -39,3 +39,4 @@ Rôles implémentés :
 ### Installation
 
 ### Lancement
+
