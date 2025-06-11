@@ -52,7 +52,6 @@ public abstract class Role {
      */
     public abstract String getRoleName();
 
-
     /**
      * Getter for the isAlive attribute of the instance.
      * @return true if the role is alive, false otherwise.
@@ -67,9 +66,9 @@ public abstract class Role {
     public abstract void activate();
 
     /**
-     *
-     * @param roles
-     * @return
+     * Votes against a role.
+     * @param roles the list of roles that can be voted against
+     * @return the role that was voted against
      */
     public Role vote(List<Role> roles) {
         this.mediator.displayCurrentPlayer(this);

@@ -5,6 +5,9 @@ import player.Player;
 
 import java.util.List;
 
+/**
+ * The witch is a role in the game that can heal one player and kill another.
+ */
 public class Witch extends Role {
     private boolean canHeal;
     private boolean canKill;

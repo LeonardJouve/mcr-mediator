@@ -5,6 +5,9 @@ import player.Player;
 
 import java.util.List;
 
+/**
+ * The Seer can watch the card of another player.
+ */
 public class Seer extends Role {
     public Seer(Player player, Mediator mediator) {
         super(player, mediator);
