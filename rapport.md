@@ -7,9 +7,23 @@ conception [Mediator](https://refactoring.guru/design-patterns/mediator). Ce pat
 communication entre les différents objets du jeu (joueurs, roles, ui…), facilitant ainsi la gestion des interactions
 et des règles du jeu.
 
+Aussi, nous avons ajouté au jeu une fonctionnalité particulière, des changements aléatoires du médiateur gérant la
+partie. Celà nous permet de changer les règles du jeu en cours de partie, rendant le jeu plus dynamique. Ce changement à
+chaud est réalisé grâce au Strategy Pattern.
+
 ## Conception
 
 ### Mediator
+
+Les classes et interfaces suivantes sont utilisées pour implémenter le pattern Mediator :
+
+- **Mediator** : Interface définissant les méthodes de communication entre les différents composants du jeu. (Sauf la
+  gestion des tours des loups-garous et des villageois). ... (à compléter)
+- **BaseRuleMediator** : Sous-classe de Mediator, implémente les règles de base du jeu.
+- **WeatherMediator** : Interface ... (à compléter)
+- **NormalWeatherMediator** : ... (à compléter)
+- **BloodMoonMediator** : ... (à compléter)
+- **VillagerAdvantageMediator** : ... (à compléter)
 
 ### Roles
 
