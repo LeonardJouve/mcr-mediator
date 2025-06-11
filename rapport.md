@@ -21,9 +21,12 @@ Les classes et interfaces suivantes sont utilisées pour implémenter le pattern
   gestion des tours des loups-garous et des villageois). ... (à compléter)
 - **BaseRuleMediator** : Sous-classe de Mediator, implémente les règles de base du jeu.
 - **WeatherMediator** : Interface ... (à compléter)
-- **NormalWeatherMediator** : ... (à compléter)
-- **BloodMoonMediator** : ... (à compléter)
-- **VillagerAdvantageMediator** : ... (à compléter)
+- **NormalWeatherMediator** : Implémentation de `WeatherMediator`. Définit les règles de base du jeu sans
+  conditions météorologiques spéciales.
+- **BloodMoonMediator** : Sous-classe de `NormalWeatherMediator`. Implémente des règles spécifiques pour une
+  nuit de pleine lune, où les loups-garous peuvent attaquer deux joueurs au lieu d'un seul.
+- **VillagerAdvantageMediator** :  Sous-classe de `NormalWeatherMediator`. Implémente des règles spécifiques où les
+  villageois ont un avantage, en pouvant voter pour éliminer un joueur supplémentaire pendant la journée.
 
 ### Roles
 
