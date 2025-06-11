@@ -96,7 +96,7 @@ public class BaseRuleMediator implements Mediator {
      * PLays the villagers turn.
      */
     private void villagersTurn(){
-        this.weatherMediator.villagersTurn(this.getRolesAlive().toList());
+        this.weatherMediator.villagersTurn(new ArrayList<>(this.getRolesAlive().toList()));
     }
 
     /**
@@ -185,6 +185,7 @@ public class BaseRuleMediator implements Mediator {
 
             this.victims.add(role);
             role.kill();
+            chooseAmong.remove(role);
             this.gameDisplay.showVoteResults(voteMap, role);
 
             return role;
