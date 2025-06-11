@@ -14,7 +14,8 @@ et des règles du jeu.
 ### Roles
 
 Classe abstraite `Role` représentant un rôle dans le jeu. Elle est responsable de la gestion des actions spécifiques à
-chaque rôle.
+chaque rôle. Contient un lien sur le mediator avec lequel elle interagit pour effectuer des actions. Contient aussi un
+champ `isAlive` pour savoir si le joueur est encore en vie.
 
 Rôles implémentés :
 
