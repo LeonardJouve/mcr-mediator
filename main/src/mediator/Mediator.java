@@ -89,7 +89,7 @@ public interface Mediator {
 
 
     /**
-     * Displays the dead players of the game.
+     * Displays the dead roles of the game.
      */
     void displayVictims();
 

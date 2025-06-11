@@ -131,11 +131,20 @@ public class BaseRuleMediator implements Mediator {
             this.gameOver = true;
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Stream<Role> getRolesAlive() {
         return Stream.concat(getWereWolvesAlive(), getNiceGuysAlive());
     }
 
+
+    /**
+     * Gets the all living nice guys
+     * @return stream with all living role in the game
+     */
     public Stream<Role> getNiceGuysAlive(){
         return Stream.concat(villagers.stream(), Stream.of(this.witch,this.seer).filter(Objects::nonNull)).filter(Role::isAlive);
     }
@@ -149,9 +158,9 @@ public class BaseRuleMediator implements Mediator {
     }
 
     /**
-     * Cette fonction existe pour créer un vote, par exemple quand les loups garous ou le village doivent voter pour l'élimination d'un villageois,
-     * @param voters le groupe de votants, ils doivent tous être vivants
-     * @param chooseAmong parmi quel sous-ensemble on propose aux votants de voter
+     * This function is used to create a vote, for example when the werewolves or the village have to vote to eliminate a villager.
+     * @param voters the roles that will participate in the vote
+     * @param chooseAmong among which roles to choose
      */
     Role killVote(List<? extends Role> voters, List<Role> chooseAmong) {
         while (true) {
@@ -284,6 +293,9 @@ public class BaseRuleMediator implements Mediator {
         return this.gameDisplay.selectRole(roles, reason);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void displayVictims() {
         this.gameDisplay.showVictims(this.victims);
@@ -307,11 +319,17 @@ public class BaseRuleMediator implements Mediator {
         role.heal();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void displayCurrentPlayer(Role role) {
         this.gameDisplay.showPlayerName(role);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GameDisplay getGameDisplay() {
         return this.gameDisplay;
