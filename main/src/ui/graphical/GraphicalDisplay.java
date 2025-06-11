@@ -65,7 +65,7 @@ public class GraphicalDisplay implements GameDisplay {
 
     @Override
     public void showVoteResults(Map<Role, Integer> votes, Role eliminated) {
-        log("\n[Résultats du vote]");
+        log("[Résultats du vote]");
         votes.forEach((role, count) ->
                 log("  " + role.getPlayer().getName() + ": " + count + " votes")
         );
@@ -82,7 +82,7 @@ public class GraphicalDisplay implements GameDisplay {
 
     @Override
     public void showVictims(List<Role> roles) {
-        log("\nVictimes:");
+        log("Victimes:");
         roles.forEach(role -> log("  - " + role.getPlayer().getName()));
     }
 
