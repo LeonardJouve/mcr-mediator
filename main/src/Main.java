@@ -45,6 +45,6 @@ public class Main {
         autoMediator.start();
         // --------------------------------------
 
-        System.out.println("Finished");
+        System.out.println("\nFinished");
     }
 }
