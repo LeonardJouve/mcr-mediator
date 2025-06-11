@@ -5,6 +5,9 @@ import role.WereWolf;
 
 import java.util.List;
 
+/**
+ * The blood moon mediator gives a slight advantage to the were wolves, allowing them to kill two players.
+ */
 public class BloodMoonMediator extends NormalWeatherMediator {
     public BloodMoonMediator(BaseRuleMediator mediator) {
         super(mediator);

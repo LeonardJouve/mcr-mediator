@@ -140,7 +140,6 @@ public class BaseRuleMediator implements Mediator {
         return Stream.concat(getWereWolvesAlive(), getNiceGuysAlive());
     }
 
-
     /**
      * Gets the all living nice guys
      * @return stream with all living role in the game
@@ -267,7 +266,6 @@ public class BaseRuleMediator implements Mediator {
     public List<Role> getVictims() {
         return this.victims;
     }
-
 
     /**
      * {@inheritDoc}
