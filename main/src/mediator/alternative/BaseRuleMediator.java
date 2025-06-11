@@ -176,7 +176,6 @@ public class BaseRuleMediator implements Mediator {
 
             this.victims.add(role);
             role.kill();
-            chooseAmong.remove(role);
             this.gameDisplay.showVoteResults(voteMap, role);
 
             return role;

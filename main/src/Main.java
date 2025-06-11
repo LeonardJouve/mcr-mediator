@@ -2,7 +2,9 @@
 import mediator.alternative.BaseRuleMediator;
 import mediator.Mediator;
 import player.Player;
+import ui.GameDisplay;
 import ui.RandomInput;
+import ui.console.ConsoleDisplay;
 import ui.graphical.MainFrame;
 
 import java.util.ArrayList;
@@ -22,10 +24,10 @@ public class Main {
         ));
         // Auto graphical
         // --------------------------------------
-        MainFrame autoframe = new MainFrame(new RandomInput());
-        Mediator automediator = new BaseRuleMediator(players, autoframe.getDisplay());
-        autoframe.setVisible(true);
-        automediator.start();
+//        MainFrame autoframe = new MainFrame(new RandomInput());
+//        Mediator automediator = new BaseRuleMediator(players, autoframe.getDisplay());
+//        autoframe.setVisible(true);
+//        automediator.start();
         // --------------------------------------
 
         // Manual graphical
@@ -38,9 +40,9 @@ public class Main {
 
         // Auto console
         // --------------------------------------
-//        GameDisplay display = new ConsoleDisplay(new RandomInput());
-//        Mediator autoMediator = new BaseRuleMediator(players, display);
-//        autoMediator.start();
+        GameDisplay display = new ConsoleDisplay(new RandomInput());
+        Mediator autoMediator = new BaseRuleMediator(players, display);
+        autoMediator.start();
         // --------------------------------------
 
         System.out.println("Finished");
