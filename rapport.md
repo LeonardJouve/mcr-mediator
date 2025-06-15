@@ -21,16 +21,19 @@ Lors de la réalisation de ce projet, nous avons rencontrés quelques difficult�
 
 Les classes et interfaces suivantes sont utilisées pour implémenter le pattern Mediator :
 
-- **Mediator** : Interface définissant les méthodes de communication entre les différents composants du jeu. (Sauf la
-  gestion des tours des loups-garous et des villageois). ... (à compléter)
+- **Mediator** : Interface définissant les méthodes de communication entre les différents composants du jeu: UserInput, GameDisplay et les différents roles.
 - **BaseRuleMediator** : Sous-classe de Mediator, implémente les règles de base du jeu.
-- **WeatherMediator** : Interface ... (à compléter)
+- **WeatherMediator** : Interface définissant les méthodes à implémenter pour les sous-mediators s'occupant des événements météorologiques. Ce sous-médiator s'occupe de gérer le tour des loups garous et des villageois.
 - **NormalWeatherMediator** : Implémentation de `WeatherMediator`. Définit les règles de base du jeu sans
   conditions météorologiques spéciales.
 - **BloodMoonMediator** : Sous-classe de `NormalWeatherMediator`. Implémente des règles spécifiques pour une
   nuit de pleine lune, où les loups-garous peuvent attaquer deux joueurs au lieu d'un seul.
 - **VillagerAdvantageMediator** :  Sous-classe de `NormalWeatherMediator`. Implémente des règles spécifiques où les
-  villageois ont un avantage, en pouvant voter pour éliminer un joueur supplémentaire pendant la journée.
+  villageois ont un avantage. Si la victime choisie par le vote est un loup garou, un nouveau vote a lieu pendant la journée.
+
+Le mediator fait office de narrateur dans la partie. Il coordonne et les différents colleagues entre eux et les informes lorsqu'une action est nécessaire.
+
+Une spécificité intéressante du pattern mediator intervient lorsqu'il est changé à la volée. Pour illustrer celà, nous avons décider d'ajouter un pattern stratégie au sein du `BaseRuleMediator`. Le `BaseRuleMediator` délègue certaines responsabilitées au `WeatherMediator` qui s'occupe de gérer le tour des loups garous et des villageois. Le `WeatherMediator` stocke une référence sur le `BaseRuleMediator` qui l'a créé et peut ainsi définir des conditions de transition pour changer de stratégie à la volée. Dans notre cas, les différents événements météorologiques ont 1 chance sur 2 d'être déclanchés dans le cas contraire, le temps reste clair. Dans une cas où un événement a lieu, un temps dégagé est définit pour le tour suivant.
 
 ### Roles
 
@@ -46,6 +49,11 @@ Rôles implémentés :
 - **Voyante** : Peut découvrir le rôle d'un joueur pendant la nuit.
 - **Sorcière** : Possède deux potions, une pour sauver un joueur et une pour tuer un joueur, qu'elle peut utiliser
   pendant la nuit.
+
+### Saisies utilisateurs et affichage
+
+Afin de respecter les principes SOLID, nous avons décider distinguer l'affichage des saisies utilisateurs. Pour celà, nous avons créé deux interfaces: `UserInput` et `GameDisplay`.
+Nous avons défini deux implémentations concrètes de ces interfaces: un mode console avec la class `ConsoleDisplay` et un mode graphique (java swing) avec la class `GraphicalDisplay`. Pour le mode graphique, la class `GraphicalInput` permet de saisir les entrées utilisateurs depuis l'interface. Afin de respecter le "Dependency inversion principle", la class `GraphicalDisplay` dépend de l'interface `UserInput` on peut alors également utiliser le `RandomInput` pour les modes console ou graphiques.
 
 ## Diagramme de classe
 
