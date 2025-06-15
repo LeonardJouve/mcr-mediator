@@ -7,6 +7,10 @@ package player;
 public class Player {
     private final String name;
 
+    /**
+     * Constructor for the player
+     * @param name name of the player
+     */
     public Player(String name) {
         this.name = name;
     }

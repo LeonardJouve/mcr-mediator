@@ -11,6 +11,10 @@ Aussi, nous avons ajouté au jeu une fonctionnalité particulière, des changeme
 partie. Celà nous permet de changer les règles du jeu en cours de partie, rendant le jeu plus dynamique. Ce changement à
 chaud est réalisé grâce au Strategy Pattern.
 
+### Difficultés rencontrées
+
+Lors de la réalisation de ce projet, nous avons rencontrés quelques difficultés. Tout d'abord, nous avons mis du temps à trouver un projet qui convienne un minimum à tous les membres du groupe, ainsi qu'à l'équipe enseignante. De plus, une fois le thème choisi, nous avons perdu énormément de temps à essayer d'avoir un jeu fonctionnel avec TCP/IP. En effet, nous comptions intiallement implémenter une version mutli-joueur du jeu es Loups-garous de Thiercelieux, mais nous avions largement sous-estimé la charge de travail importante que cela représenatait. Ainsi, une fois la moitié du temps du projet dépassée, n'ayant que peu avancé dans la partie multi-joueur du projet, et estimant qu'il ne devrait pas s'agir de l'essentiel de nos efforts pour un projet sur le pattern "Mediator", nous avons décidé d'abandonner cet aspect, et de simplement implémenter une version "jouable" sur un seul appareil.
+
 ## Conception
 
 ### Mediator

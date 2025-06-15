@@ -11,13 +11,17 @@ import java.util.List;
 public class Witch extends Role {
     private boolean canHeal;
     private boolean canKill;
-
+    /**
+     * Constructor for the Witch
+     */
     public Witch(Player player, Mediator mediator) {
         super(player, mediator);
         this.canHeal = true;
         this.canKill = true;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     public void activate() {
         // Show victim
         List<Role> victims = this.mediator.getVictims();
@@ -37,7 +41,9 @@ public class Witch extends Role {
             this.canKill = false;
         }
     }
-
+    /**
+     * {@inheritDoc}
+     */
     public String getRoleName() {
         return "Witch";
     }

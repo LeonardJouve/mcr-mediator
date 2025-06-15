@@ -9,12 +9,19 @@ import player.Player;
  * Its goal is to survive and help the village win.
  */
 public class Villager extends Role {
+    /**
+     * Constructor for the Villager
+     */
     public Villager(Player player, Mediator mediator) {
         super(player, mediator);
     }
-
+    /**
+     * {@inheritDoc}
+     */
     public void activate() {}
-
+    /**
+     * {@inheritDoc}
+     */
     public String getRoleName() {
         return "Villager";
     }
