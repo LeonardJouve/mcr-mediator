@@ -63,9 +63,15 @@ Nous avons défini deux implémentations concrètes de ces interfaces: un mode c
 
 ### Prérequis
 
-- Java
+- Cloner le projet
+- Java JDK et JRE
 
 ### Installation
 
+Aucune étape spécifique est nécéssaire pour l'installation du projet
+
 ### Lancement
 
+Executer la methode static `main` de la class `Main`
+
+Les differentes strategies d'affichage et de saisie utilisateurs sont illustrees dans la methode. Il suffit de decommenter celle que vous souhaiter essayer.
